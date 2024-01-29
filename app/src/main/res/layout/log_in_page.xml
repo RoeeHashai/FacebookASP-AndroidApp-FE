@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LogInPageActivity">
+
+    <Button
+        android:id="@+id/LogInBT"
+        android:layout_width="314dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:backgroundTint="#0000FF"
+        android:text="@string/log_in"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/passwordBox"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:layout_width="309dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/password"
+        android:inputType="text|textPassword"
+        android:singleLine="true"
+        app:layout_constraintBottom_toTopOf="@+id/LogInBT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EmailBox" />
+
+    <EditText
+        android:id="@+id/EmailBox"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:layout_width="309dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="26dp"
+        android:hint="@string/email_address"
+        android:inputType="text|textEmailAddress"
+        android:singleLine="true"
+        app:layout_constraintBottom_toTopOf="@+id/LogInBT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.73" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="70dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="81dp"
+        android:layout_marginBottom="39dp"
+        app:layout_constraintBottom_toTopOf="@+id/passwordBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/facebook_icon"
+        android:contentDescription="@string/facebooklogo" />
+
+    <Button
+        android:id="@+id/SignInBT"
+        android:layout_width="314dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/sign_in"
+        android:textColor="#0000FF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LogInBT"
+        app:layout_constraintVertical_bias="0.01999998" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
