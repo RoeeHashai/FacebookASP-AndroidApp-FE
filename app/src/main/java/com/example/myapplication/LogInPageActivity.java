@@ -13,9 +13,14 @@ public class LogInPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.log_in_page);
+        Button SignInBT = findViewById(R.id.SignInBT);
+        SignInBT.setOnClickListener(v -> {
+            Intent i = new Intent(this, SignInPageActivity.class);
+            startActivity(i);
+        });
         Button LogInBT = findViewById(R.id.LogInBT);
         LogInBT.setOnClickListener(v -> {
-            Intent i = new Intent(this, SignInPageActivity.class);
+            Intent i = new Intent(this, FeedPageActivity.class);
             startActivity(i);
         });
     }
