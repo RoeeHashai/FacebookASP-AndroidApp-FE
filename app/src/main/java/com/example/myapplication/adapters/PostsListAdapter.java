@@ -1,14 +1,18 @@
 package com.example.myapplication.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.CommentsPageActivity;
+import com.example.myapplication.FeedPageActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.entities.Post;
 
@@ -23,6 +27,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         private final ImageView ivProfile;
         private final TextView tvContent;
         private final ImageView ivPic;
+        private final ImageButton commentBT;
 
         private PostViewHolder(View itemView) {
             super(itemView);
@@ -30,6 +35,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             ivProfile = itemView.findViewById(R.id.ivProfile);
             tvContent = itemView.findViewById(R.id.tvContent);
             ivPic = itemView.findViewById(R.id.ivPic);
+            commentBT = itemView.findViewById(R.id.postCommentsBT);
         }
     }
 
@@ -54,6 +60,10 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             holder.ivProfile.setImageResource(current.getAuthor().getProfilePic());
             holder.tvContent.setText(current.getContent());
             holder.ivPic.setImageResource(current.getPic());
+            holder.commentBT.setOnClickListener(v -> {
+                Intent intent = new Intent(holder.commentBT.getContext(), CommentsPageActivity.class);
+                holder.commentBT.getContext().startActivity(intent);
+            });
         }
     }
 
