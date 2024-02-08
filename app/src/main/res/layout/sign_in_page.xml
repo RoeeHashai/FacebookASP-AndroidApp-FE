@@ -18,11 +18,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passVrfyBox"
+        app:layout_constraintTop_toBottomOf="@+id/passVrfySignBox"
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/passBox"
+        android:id="@+id/passSignBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -33,10 +33,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/useNameBox" />
+        app:layout_constraintTop_toBottomOf="@+id/userNameSignBox" />
 
     <EditText
-        android:id="@+id/passVrfyBox"
+        android:id="@+id/passVrfySignBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -46,10 +46,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passBox" />
+        app:layout_constraintTop_toBottomOf="@+id/passSignBox" />
 
     <EditText
-        android:id="@+id/useNameBox"
+        android:id="@+id/userNameSignBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
@@ -71,7 +71,7 @@
         android:adjustViewBounds="false"
         android:contentDescription="TODO"
         android:cropToPadding="false"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/signMeInBT"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +93,7 @@
         />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/signMeInBT"
         android:layout_width="314dp"
         android:layout_height="50dp"
         android:backgroundTint="#0000FF"

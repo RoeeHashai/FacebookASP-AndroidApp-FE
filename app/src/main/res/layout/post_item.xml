@@ -77,5 +77,12 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:src="@drawable/share_24px" />
+        <ImageButton
+            android:id="@+id/postMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/menu_24px" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

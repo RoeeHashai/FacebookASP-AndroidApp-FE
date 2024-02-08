@@ -3,6 +3,9 @@ package com.example.myapplication.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Post {
     @PrimaryKey(autoGenerate = true)
@@ -12,16 +15,20 @@ public class Post {
     private int likes;
     private int pic;
 
+    private List<Comment> comments;
+
     public Post(User author, String content, int pic) {
         this.author = author;
         this.content = content;
         this.pic = pic;
+        this.comments = new ArrayList<>();
     }
 
     public Post(User author, String content) {
         this.author = author;
         this.content = content;
         this.pic = 0;
+        this.comments = new ArrayList<>();
     }
 
     public int getId() {

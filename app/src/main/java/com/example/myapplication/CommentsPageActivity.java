@@ -27,7 +27,7 @@ public class CommentsPageActivity extends AppCompatActivity {
         lstComments.setLayoutManager(new LinearLayoutManager(this));
         List<Comment> comments = new ArrayList<>();
         User myUser = new User("Yatyat", "12345678", "Yatir Gross", R.drawable.profile_image);
-        comments.add(new Comment(myUser,"my comment"));
+        comments.add(new Comment(myUser,"my comment is very very longgggggggggg"));
         comments.add(new Comment(myUser,"my comment 2"));
         comments.add(new Comment(myUser,"my comment 3"));
         comments.add(new Comment(myUser,"my comment 4"));

@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FeedPageActivity">
@@ -15,13 +15,15 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_drawer_menu" />
  -->
-
+    <include layout="@layout/nav_header"
+        android:id="@+id/header_title"
+        />
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/bottomLayout"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_title"
         tools:layout_editor_absoluteX="0dp">
 
         <androidx.recyclerview.widget.RecyclerView

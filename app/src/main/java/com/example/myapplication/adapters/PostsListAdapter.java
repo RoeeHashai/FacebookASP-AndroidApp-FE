@@ -3,10 +3,12 @@ package com.example.myapplication.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +23,13 @@ import java.util.List;
 public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.PostViewHolder> {
 
 
-
     class PostViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvAuthor;
         private final ImageView ivProfile;
         private final TextView tvContent;
         private final ImageView ivPic;
         private final ImageButton commentBT;
+        private final ImageButton menuBT;
 
         private PostViewHolder(View itemView) {
             super(itemView);
@@ -36,6 +38,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             tvContent = itemView.findViewById(R.id.tvContent);
             ivPic = itemView.findViewById(R.id.ivPic);
             commentBT = itemView.findViewById(R.id.postCommentsBT);
+            menuBT = itemView.findViewById(R.id.postMenu);
         }
     }
 
@@ -57,15 +60,36 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         if (posts != null) {
             final Post current = posts.get(position);
             holder.tvAuthor.setText(current.getAuthor().getDisplayName());
-            holder.ivProfile.setImageResource(current.getAuthor().getProfilePic());
+            if (current.getAuthor().getUriProfilePic() != null) {
+                holder.ivProfile.setImageURI(current.getAuthor().getUriProfilePic());
+            }
+            else {
+                holder.ivProfile.setImageResource(current.getAuthor().getIntProfilePic());
+            }
             holder.tvContent.setText(current.getContent());
             holder.ivPic.setImageResource(current.getPic());
             holder.commentBT.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.commentBT.getContext(), CommentsPageActivity.class);
                 holder.commentBT.getContext().startActivity(intent);
             });
+            holder.menuBT.setOnClickListener(v -> {
+                showPostMenu(v, position);
+            });
         }
     }
+
+    private void showPostMenu(View v, int position) {
+        PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.edit_delete_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
+
 
     public void setPosts(List<Post> s) {
         posts = s;

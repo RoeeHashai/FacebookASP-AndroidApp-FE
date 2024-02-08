@@ -16,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.example.myapplication.adapters.CommentsListAdapter;
 import com.example.myapplication.adapters.PostsListAdapter;
@@ -30,37 +32,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedPageActivity extends AppCompatActivity {
-
-    public ActionBarDrawerToggle toggle;
-    //public DrawerLayout drawerLayout;
-    public MenuItem logout;
     private ImageButton showMenuBt;
     private ImageButton logoutBT;
+
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feed_page);
-       ;/* drawerLayout = findViewById(R.id.drawerLayout);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        FloatingActionButton openMenuBT = findViewById(R.id.openMenuBT);
-        openMenuBT.setOnClickListener(v -> {
-            this.drawerLayout.open();
-        }); */
+        String username = getIntent().getStringExtra("CURRENT_USER");
+        currentUser = UserListSrc.getInstance().getUser(username);
+        setHeaderDetails();
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
         final PostsListAdapter adapter = new PostsListAdapter(this);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
-        List<Post> posts = new ArrayList<>();
-        User myUser = new User("Yatyat", "12345678", "Yatir Gross", R.drawable.profile_image);
-        posts.add(new Post(myUser,"Hello World1", R.drawable.profile_image));
-        posts.add(new Post( myUser,"Hello World2"));
-        posts.add(new Post( myUser,"Hello World3", R.drawable.facebook_icon));
-        posts.add(new Post( myUser,"Hello World4", R.drawable.account_circle_24px));
+        List<Post> posts = PostListSrc.getInstance().getPosts();
         adapter.setPosts(posts);
-
         showMenuBt = findViewById(R.id.menuBT);
         showMenuBt.setOnClickListener(v -> {
             showMenu(v);
@@ -71,6 +60,18 @@ public class FeedPageActivity extends AppCompatActivity {
             startActivity(i);
         });
 
+    }
+
+    private void setHeaderDetails() {
+        ImageView profile = findViewById(R.id.profileHeader);
+        if (currentUser.getUriProfilePic() == null) {
+            profile.setImageResource(currentUser.getIntProfilePic());
+        }
+        else {
+            profile.setImageURI(currentUser.getUriProfilePic());
+        }
+        TextView displayName = findViewById(R.id.NameHeaderText);
+        displayName.setText(currentUser.getDisplayName());
     }
 
     private void showMenu(View v) {
@@ -84,4 +85,6 @@ public class FeedPageActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
+
+
 }
