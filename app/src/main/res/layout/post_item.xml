@@ -29,6 +29,14 @@
             android:layout_gravity="bottom"
             android:layout_marginStart="10dp"
             android:textSize="16pt" />
+
+        <TextView
+            android:id="@+id/postDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textAlignment="viewEnd" />
     </LinearLayout>
 
     <TextView
@@ -42,12 +50,14 @@
         android:id="@+id/ivPic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottomFeedLayout"
         app:layout_constraintTop_toBottomOf="@id/tvContent"
         tools:layout_editor_absoluteX="16dp" />
 
     <LinearLayout
-        android:id="@+id/bottomLayout"
+        android:id="@+id/bottomFeedLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -73,14 +83,15 @@
 
         <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="27dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:src="@drawable/share_24px" />
+
         <ImageButton
             android:id="@+id/postMenu"
             android:layout_width="wrap_content"
-            android:layout_height="27dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:src="@drawable/menu_24px" />

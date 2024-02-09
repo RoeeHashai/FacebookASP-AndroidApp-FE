@@ -8,6 +8,7 @@ import java.util.List;
 public class UserListSrc {
     private static UserListSrc inst;
     private List<User> users;
+    private User activeUser;
 
     private UserListSrc(){
 
@@ -41,4 +42,13 @@ public class UserListSrc {
     public void addUser(User user) {
         users.add(user);
     }
+
+    public void setActiveUser(User activeUser) {
+        this.activeUser = activeUser;
+    }
+
+    public User getActiveUser() {
+        return activeUser;
+    }
 }
+

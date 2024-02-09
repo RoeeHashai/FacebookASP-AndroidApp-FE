@@ -7,22 +7,12 @@ import com.example.myapplication.entities.User;
 
 @Entity
 public class Comment {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
     private User author;
     private String content;
 
     public Comment(User author, String content) {
         this.author = author;
         this.content = content;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public User getAuthor() {

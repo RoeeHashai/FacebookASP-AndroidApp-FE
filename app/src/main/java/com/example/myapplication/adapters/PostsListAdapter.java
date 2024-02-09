@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.CommentsPageActivity;
 import com.example.myapplication.FeedPageActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Post;
+import com.example.myapplication.entities.User;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
     class PostViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvAuthor;
         private final ImageView ivProfile;
+        private final TextView tvDate;
         private final TextView tvContent;
         private final ImageView ivPic;
         private final ImageButton commentBT;
@@ -35,6 +38,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             super(itemView);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             ivProfile = itemView.findViewById(R.id.ivProfile);
+            tvDate = itemView.findViewById(R.id.postDate);
             tvContent = itemView.findViewById(R.id.tvContent);
             ivPic = itemView.findViewById(R.id.ivPic);
             commentBT = itemView.findViewById(R.id.postCommentsBT);
@@ -67,9 +71,18 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 holder.ivProfile.setImageResource(current.getAuthor().getIntProfilePic());
             }
             holder.tvContent.setText(current.getContent());
-            holder.ivPic.setImageResource(current.getPic());
+            holder.tvDate.setText(current.getDate());
+            if(current.getUriPic() == null) {
+                holder.ivPic.setImageResource(current.getIntPic());
+            }
+            else {
+                holder.ivPic.setImageURI(current.getUriPic());
+            }
             holder.commentBT.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.commentBT.getContext(), CommentsPageActivity.class);
+                User user = UserListSrc.getInstance().getActiveUser();
+                int fixPos = posts.size() - position - 1;
+                intent.putExtra("CURRENT_POST", fixPos);
                 holder.commentBT.getContext().startActivity(intent);
             });
             holder.menuBT.setOnClickListener(v -> {
@@ -80,7 +93,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
     private void showPostMenu(View v, int position) {
         PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-        popupMenu.getMenuInflater().inflate(R.menu.edit_delete_menu, popupMenu.getMenu());
+        popupMenu. getMenuInflater().inflate(R.menu.edit_delete_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

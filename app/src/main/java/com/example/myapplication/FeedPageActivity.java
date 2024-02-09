@@ -29,13 +29,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class FeedPageActivity extends AppCompatActivity {
     private ImageButton showMenuBt;
     private ImageButton logoutBT;
+    private ImageButton addPostBT;
 
-    private User currentUser;
+    public User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +46,16 @@ public class FeedPageActivity extends AppCompatActivity {
         setContentView(R.layout.feed_page);
         String username = getIntent().getStringExtra("CURRENT_USER");
         currentUser = UserListSrc.getInstance().getUser(username);
+        UserListSrc.getInstance().setActiveUser(currentUser);
         setHeaderDetails();
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
         final PostsListAdapter adapter = new PostsListAdapter(this);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         List<Post> posts = PostListSrc.getInstance().getPosts();
-        adapter.setPosts(posts);
+        List<Post> revPosts = new ArrayList<>(posts);
+        Collections.reverse(revPosts);
+        adapter.setPosts(revPosts);
         showMenuBt = findViewById(R.id.menuBT);
         showMenuBt.setOnClickListener(v -> {
             showMenu(v);
@@ -57,6 +63,13 @@ public class FeedPageActivity extends AppCompatActivity {
         logoutBT = findViewById(R.id.logoutBT);
         logoutBT.setOnClickListener(v -> {
             Intent i = new Intent(this, LogInPageActivity.class);
+            startActivity(i);
+        });
+        addPostBT = findViewById(R.id.addPostBT);
+        addPostBT.setOnClickListener(v -> {
+            Intent i = new Intent(this, AddPostActivity.class);
+            String user = currentUser.getUserName();
+            i.putExtra("CURRENT_USER", user);
             startActivity(i);
         });
 

@@ -1,9 +1,15 @@
 package com.example.myapplication.entities;
 
+import android.net.Uri;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,23 +19,47 @@ public class Post {
     private User author;
     private String content;
     private int likes;
-    private int pic;
-
+    private Calendar date;
+    private int intPic;
+    private Uri uriPic;
     private List<Comment> comments;
 
     public Post(User author, String content, int pic) {
         this.author = author;
         this.content = content;
-        this.pic = pic;
+        this.intPic = pic;
+        this.date = Calendar.getInstance();
+        this.comments = new ArrayList<>();
+    }
+
+    public Post(User author, String content, Uri pic) {
+        this.author = author;
+        this.content = content;
+        this.uriPic = pic;
+        this.date = Calendar.getInstance();
         this.comments = new ArrayList<>();
     }
 
     public Post(User author, String content) {
         this.author = author;
         this.content = content;
-        this.pic = 0;
+        this.intPic = 0;
+        this.date = Calendar.getInstance();
         this.comments = new ArrayList<>();
     }
+
+    public String getDate() {
+        if (date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            return dateFormat.format(date.getTime());
+        }
+        return "";
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
 
     public int getId() {
         return id;
@@ -63,11 +93,25 @@ public class Post {
         this.likes = likes;
     }
 
-    public int getPic() {
-        return pic;
+    public int getIntPic() {
+        return intPic;
     }
 
-    public void setPic(int pic) {
-        this.pic = pic;
+    public Uri getUriPic() {
+        return uriPic;
+    }
+
+    public void setIntPic(int intPic) {
+        this.intPic = intPic;
+        this.uriPic = null;
+    }
+
+    public void setUriPic(Uri uriPic) {
+        this.uriPic = uriPic;
+        this.intPic = 0;
+    }
+
+    public void addComment(User author, String content) {
+        this.comments.add(new Comment(author, content));
     }
 }

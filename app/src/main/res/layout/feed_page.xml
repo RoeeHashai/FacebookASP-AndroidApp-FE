@@ -6,15 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FeedPageActivity">
-<!--
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nevView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_drawer_menu" />
- -->
+
     <include layout="@layout/nav_header"
         android:id="@+id/header_title"
         />
@@ -22,7 +14,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+        app:layout_constraintBottom_toTopOf="@id/bottomFeedLayout"
         app:layout_constraintTop_toBottomOf="@id/header_title"
         tools:layout_editor_absoluteX="0dp">
 
@@ -34,7 +26,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
-        android:id="@+id/bottomLayout"
+        android:id="@+id/bottomFeedLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
