@@ -64,7 +64,7 @@ public class AddPostActivity extends AppCompatActivity {
 
     private boolean validPost() {
         EditText content = findViewById(R.id.postContentBox);
-        if (content.getText().toString().length() < 3) {
+        if (content.getText().toString().length() < 3 && selectedImage == null) {
             Toast.makeText(this, "Post too short", Toast.LENGTH_SHORT).show();
             return false;
         }

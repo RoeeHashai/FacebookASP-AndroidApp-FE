@@ -44,14 +44,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:textSize="8pt"
+        app:layout_constraintTop_toBottomOf="@id/tvEditContent" />
+
+    <EditText
+        android:id="@+id/tvEditContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="8pt"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/topLayout" />
 
     <ImageView
         android:id="@+id/ivPic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/bottomFeedLayout"
         app:layout_constraintTop_toBottomOf="@id/tvContent"
         tools:layout_editor_absoluteX="16dp" />
@@ -65,6 +75,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
+        <TextView
+            android:id="@+id/likeCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10pt"/>
         <ImageButton
             android:id="@+id/likeBT"
             android:layout_width="wrap_content"
@@ -77,14 +93,14 @@
             android:id="@+id/postCommentsBT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:background="@android:color/transparent"
             android:src="@drawable/comment_24px" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:background="@android:color/transparent"
             android:src="@drawable/share_24px" />
 
@@ -92,8 +108,31 @@
             android:id="@+id/postMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:background="@android:color/transparent"
             android:src="@drawable/menu_24px" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/makePostChangeBT"
+        android:layout_width="89dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#0000FF"
+        android:text="done"
+        android:textSize="8pt"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/ivPic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topLayout" />
+
+    <ImageButton
+        android:id="@+id/editImageBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:src="@drawable/photo_library_24px"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/ivPic"
+        app:layout_constraintEnd_toStartOf="@id/makePostChangeBT"
+        app:layout_constraintTop_toBottomOf="@id/topLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

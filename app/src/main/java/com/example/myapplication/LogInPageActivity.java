@@ -30,6 +30,9 @@ public class LogInPageActivity extends AppCompatActivity {
                 String user = usernameBox.getText().toString();
                 i.putExtra("CURRENT_USER", user);
                 startActivity(i);
+                usernameBox.setText("");
+                EditText passwordBox = findViewById(R.id.passwordLogBox);
+                passwordBox.setText("");
             }
         });
     }

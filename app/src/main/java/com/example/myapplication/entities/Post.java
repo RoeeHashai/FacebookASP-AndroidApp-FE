@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Post {
@@ -19,6 +21,7 @@ public class Post {
     private User author;
     private String content;
     private int likes;
+    private Set<User> likedUsers;
     private Calendar date;
     private int intPic;
     private Uri uriPic;
@@ -27,6 +30,8 @@ public class Post {
     public Post(User author, String content, int pic) {
         this.author = author;
         this.content = content;
+        this.likes = 0;
+        this.likedUsers = new HashSet<>();
         this.intPic = pic;
         this.date = Calendar.getInstance();
         this.comments = new ArrayList<>();
@@ -35,6 +40,8 @@ public class Post {
     public Post(User author, String content, Uri pic) {
         this.author = author;
         this.content = content;
+        this.likes = 0;
+        this.likedUsers = new HashSet<>();
         this.uriPic = pic;
         this.date = Calendar.getInstance();
         this.comments = new ArrayList<>();
@@ -43,6 +50,8 @@ public class Post {
     public Post(User author, String content) {
         this.author = author;
         this.content = content;
+        this.likes = 0;
+        this.likedUsers = new HashSet<>();
         this.intPic = 0;
         this.date = Calendar.getInstance();
         this.comments = new ArrayList<>();
@@ -113,5 +122,15 @@ public class Post {
 
     public void addComment(User author, String content) {
         this.comments.add(new Comment(author, content));
+    }
+
+    public void addLikedUser(User user) {
+        this.likedUsers.add(user);
+    }
+    public void removeLikedUser(User user) {
+        this.likedUsers.remove(user);
+    }
+    public boolean isUserLiked(User user) {
+        return this.likedUsers.contains(user);
     }
 }

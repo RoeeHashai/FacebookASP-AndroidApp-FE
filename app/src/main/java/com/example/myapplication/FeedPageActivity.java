@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.RouteListingPreference;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,10 +37,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class FeedPageActivity extends AppCompatActivity {
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageButton showMenuBt;
     private ImageButton logoutBT;
     private ImageButton addPostBT;
-
+    PostsListAdapter adapter;
     public User currentUser;
 
     @Override
@@ -49,13 +53,11 @@ public class FeedPageActivity extends AppCompatActivity {
         UserListSrc.getInstance().setActiveUser(currentUser);
         setHeaderDetails();
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
-        final PostsListAdapter adapter = new PostsListAdapter(this);
+        adapter = new PostsListAdapter(this);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         List<Post> posts = PostListSrc.getInstance().getPosts();
-        List<Post> revPosts = new ArrayList<>(posts);
-        Collections.reverse(revPosts);
-        adapter.setPosts(revPosts);
+        adapter.setPosts(posts);
         showMenuBt = findViewById(R.id.menuBT);
         showMenuBt.setOnClickListener(v -> {
             showMenu(v);
@@ -98,6 +100,4 @@ public class FeedPageActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
-
-
 }
