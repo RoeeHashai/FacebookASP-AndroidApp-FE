@@ -100,4 +100,21 @@ public class FeedPageActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri selectedImageUri;
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                selectedImageUri = data.getData();
+            } else {
+                // Handle camera photo capture
+                // The photo is available in the intent's extras as a bitmap
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                selectedImageUri = BitmapUtils.bitmapToUri(this, photo);
+            }
+            PostListSrc.getInstance().getPosts().get(adapter.getPosOfEditedImage()).setUriPic(selectedImageUri);
+            adapter.notifyDataSetChanged();
+        }
+    }
 }

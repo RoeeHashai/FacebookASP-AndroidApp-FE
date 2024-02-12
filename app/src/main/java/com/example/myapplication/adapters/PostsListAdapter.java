@@ -34,6 +34,10 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
+    public int getPosOfEditedImage() {
+        return posOfEditedImage;
+    }
+
     class PostViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvAuthor;
         private final ImageView ivProfile;
@@ -67,7 +71,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
     private final LayoutInflater mInfalter;
     private List<Post> posts;
-    private Uri selectedImage;
+    private int posOfEditedImage;
 
     public PostsListAdapter(Context context) {
         this.mInfalter = LayoutInflater.from(context);
@@ -106,7 +110,8 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 posts.get(revposition).setContent(holder.etContent.getText().toString());
             });
             holder.editImage.setOnClickListener(v -> {
-                //missing
+                posOfEditedImage = revposition;
+                selectPhoto(holder.editImage.getContext());
             });
             holder.commentBT.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.commentBT.getContext(), CommentsPageActivity.class);
@@ -190,4 +195,17 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         return posts;
     }
 
+    private void selectPhoto(Context context) {
+        // Intent to pick an image from the gallery
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Intent to capture a photo from the camera
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Create a chooser intent to present the user with options
+        Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{cameraIntent});
+
+        // Start the activity based on the user's choice
+        ((Activity) context).startActivityForResult(chooserIntent, REQUEST_IMAGE_CAPTURE);
+    }
 }

@@ -109,7 +109,7 @@ public class AddPostActivity extends AppCompatActivity {
                 // Handle camera photo capture
                 // The photo is available in the intent's extras as a bitmap
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
-                postImageView.setImageBitmap(photo);
+                postImageView.setImageURI(BitmapUtils.bitmapToUri(this,photo));
             }
         }
     }

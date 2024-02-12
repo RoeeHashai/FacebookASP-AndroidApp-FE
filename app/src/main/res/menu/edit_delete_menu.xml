@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/editItem"
-        android:title="edit" />
+        android:title="edit"
+        android:icon="@drawable/edit_24px"/>
     <item
         android:id="@+id/deleteItem"
-        android:title="delete"/>
+        android:icon="@drawable/delete_24px"
+        android:title="delete" />
 </menu>
