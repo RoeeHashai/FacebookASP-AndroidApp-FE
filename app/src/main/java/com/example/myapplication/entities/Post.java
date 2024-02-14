@@ -13,7 +13,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * Entity class representing a post.
+ */
 @Entity
 public class Post {
     @PrimaryKey(autoGenerate = true)
@@ -27,6 +29,14 @@ public class Post {
     private Uri uriPic;
     private List<Comment> comments;
 
+    // Constructors
+
+    /**
+     * Constructor to create a new Post object with a resource ID of the image.
+     * @param author The user who authored the post.
+     * @param content The content of the post.
+     * @param pic The resource ID of the post image.
+     */
     public Post(User author, String content, int pic) {
         this.author = author;
         this.content = content;
@@ -37,6 +47,16 @@ public class Post {
         this.comments = new ArrayList<>();
     }
 
+    /**
+     * Constructs a new Post object with the specified author, content, likes, date, image, and comments.
+     *
+     * @param author   The user who authored the post.
+     * @param content  The content of the post.
+     * @param likes    The number of likes for the post.
+     * @param date     The date and time when the post was created.
+     * @param pic      The resource ID of the post image.
+     * @param comments The list of comments on the post.
+     */
     public Post(User author, String content, int likes, Calendar date, int pic, List<Comment> comments) {
         this.author = author;
         this.content = content;
@@ -47,6 +67,12 @@ public class Post {
         this.comments = comments;
     }
 
+    /**
+     * Constructor to create a new Post object with a URI of the image.
+     * @param author The user who authored the post.
+     * @param content The content of the post.
+     * @param pic The URI of the post image.
+     */
     public Post(User author, String content, Uri pic) {
         this.author = author;
         this.content = content;
@@ -57,6 +83,11 @@ public class Post {
         this.comments = new ArrayList<>();
     }
 
+    /**
+     * Constructor to create a new Post object with no image.
+     * @param author The user who authored the post.
+     * @param content The content of the post.
+     */
     public Post(User author, String content) {
         this.author = author;
         this.content = content;
@@ -66,6 +97,8 @@ public class Post {
         this.date = Calendar.getInstance();
         this.comments = new ArrayList<>();
     }
+
+    // Getters and setters
 
     public String getDate() {
         if (date != null) {
@@ -130,16 +163,35 @@ public class Post {
         this.intPic = 0;
     }
 
+
+    /**
+     * Add a new comment to the post.
+     * @param author The user who authored the comment.
+     * @param content The content of the comment.
+     */
     public void addComment(User author, String content) {
         this.comments.add(new Comment(author, content));
     }
-
+    /**
+     * Add a user to the list of users who liked the post.
+     * @param user The user who liked the post.
+     */
     public void addLikedUser(User user) {
         this.likedUsers.add(user);
     }
+    /**
+     * Remove a user from the list of users who liked the post.
+     * @param user The user whose like is to be removed.
+     */
     public void removeLikedUser(User user) {
         this.likedUsers.remove(user);
     }
+
+    /**
+     * Check if a user has liked the post.
+     * @param user The user to check.
+     * @return True if the user has liked the post, false otherwise.
+     */
     public boolean isUserLiked(User user) {
         return this.likedUsers.contains(user);
     }

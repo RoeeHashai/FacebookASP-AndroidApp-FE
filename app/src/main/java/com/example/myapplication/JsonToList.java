@@ -24,11 +24,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Utility class to convert JSON data to lists of entities.
+ */
 public class JsonToList {
+    /**
+     * Create a list of users from a JSON file.
+     *
+     * @param context      The context of the application.
+     * @param jsonFilePath The path to the JSON file containing user data.
+     * @return A list of User objects parsed from the JSON file.
+     */
     public static List<User> createUserList(Context context, String jsonFilePath) {
         List<User> userList = new ArrayList<>();
         try {
+            // Load JSON array from file
             JSONArray jsonArray = loadJsonArray(context, jsonFilePath);
             JSONObject jsonUser = null;
             if (jsonArray != null) {
@@ -86,7 +96,13 @@ public class JsonToList {
         }
         return userList;
     }
-
+    /**
+     * Create a list of posts from a JSON file.
+     *
+     * @param context      The context of the application.
+     * @param jsonFilePath The path to the JSON file containing post data.
+     * @return A list of Post objects parsed from the JSON file.
+     */
     public static List<Post> createPostList(Context context, String jsonFilePath) {
         List<Post> postList = new ArrayList<>();
         try {
@@ -238,6 +254,13 @@ public class JsonToList {
         return postList;
     }
 
+    /**
+     * Load a JSON array from a file.
+     *
+     * @param context  The context of the application.
+     * @param filename The name of the JSON file.
+     * @return A JSONArray object containing the data from the file.
+     */
     public static JSONArray loadJsonArray(Context context, String filename) {
         try {
             InputStream inputStream = context.getAssets().open(filename);
@@ -252,7 +275,13 @@ public class JsonToList {
             return null;
         }
     }
-
+    /**
+     * Convert a JSONArray of comments to a list of Comment objects.
+     *
+     * @param jsonArray The JSONArray containing comment data.
+     * @param context   The context of the application.
+     * @return A list of Comment objects parsed from the JSONArray.
+     */
     private static List<Comment> getComments(JSONArray jsonArray, Context context) {
         List<Comment> commentList = new ArrayList<>();
         try {
@@ -270,6 +299,12 @@ public class JsonToList {
         return commentList;
     }
 
+    /**
+     * Convert a string representation of date to a Calendar object.
+     *
+     * @param dateString The string representation of the date.
+     * @return A Calendar object representing the date.
+     */
     private static Calendar strToCldr(String dateString) {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
