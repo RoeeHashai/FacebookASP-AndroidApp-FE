@@ -45,12 +45,3 @@ Throughout the development process, we iteratively improved and refined the appl
 ### 4. User Testing and Feedback:
 
 We actively engaged in user testing sessions, gathering valuable feedback to further enhance the application's usability and functionality.
-
-## Team Dynamics
-Our collaboration was characterized by effective communication, mutual respect, and shared dedication to delivering a high-quality product.
-We leveraged each other's strengths and expertise, dividing tasks and responsibilities based on our individual skill sets while maintaining a unified vision for the project.
-We fostered a supportive and collaborative work environment, encouraging open dialogue and constructive feedback to drive continuous improvement.
-
-## Contributing
-
-Contributions to this project are welcome! If you find any bugs or have suggestions for new features, feel free to open an issue or submit a pull request.
