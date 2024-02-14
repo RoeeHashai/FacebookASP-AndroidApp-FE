@@ -15,7 +15,7 @@ This Android Studio project implements a Facebook-like application where users c
 
 To run this project on your local machine, follow these steps:
 
-1. **Clone the Repository**: Clone this repository to your local machine using Git.
+**Clone the Repository**: Clone this repository to your local machine using Git.
 
    ```bash
    git clone https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/tree/main
@@ -30,6 +30,6 @@ Post Updates: Create new posts and share updates with your friends.
 Interact with Posts: Like posts by clicking the like button and comment on posts by adding comments.
 Connect with Friends: Search for other users and send friend requests to connect with them.
 
-##Contributing
+## Contributing
 
 Contributions to this project are welcome! If you find any bugs or have suggestions for new features, feel free to open an issue or submit a pull request.
