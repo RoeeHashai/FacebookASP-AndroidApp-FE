@@ -1,4 +1,4 @@
-# Facebook-like Android Application
+# Facebook Android Application
 
 This Android Studio project implements a Facebook-like application where users can create profiles, post updates, comment on posts, like posts, and connect with friends.
 
@@ -20,15 +20,15 @@ To run this project on your local machine, follow these steps:
    ```bash
    git clone https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/tree/main
   ```
-Open in Android Studio: Open the project in Android Studio. \n
+Open in Android Studio: Open the project in Android Studio.  
 Run the Application: Build and run the application on an Android emulator or a physical device.
 
 ## Usage
 
-User Authentication: Sign up for a new account or log in with an existing account.
-Post Updates: Create new posts and share updates with your friends.
-Interact with Posts: Like posts by clicking the like button and comment on posts by adding comments.
-Connect with Friends: Search for other users and send friend requests to connect with them.
+User Authentication: Sign up for a new account or log in with an existing account.  
+Post Updates: Create new posts and share updates with your friends.  
+Interact with Posts: Like posts by clicking the like button and comment on posts by adding comments.  
+Connect with Friends: Search for other users and send friend requests to connect with them.  
 
 ## Contributing
 
