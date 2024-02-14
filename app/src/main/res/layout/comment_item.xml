@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="6dp"
-    android:background="#FEFEFE">
+    android:background="?attr/backgroundColor">
 
     <LinearLayout
         android:id="@+id/ComLayout"
@@ -25,7 +25,7 @@
             android:src="@drawable/account_circle_24px" />
 
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -45,13 +45,33 @@
                 android:layout_marginStart="10dp"
                 android:textSize="8pt" />
 
+            <EditText
+                android:id="@+id/etComContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="10dp"
+                android:textSize="8pt"
+                android:visibility="gone" />
+            <Button
+                android:id="@+id/makeCommentChangeBT"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="done"
+                android:textSize="8pt"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/commentMenuBT"
-            android:layout_width="42dp"
-            android:layout_height="61dp"
-            android:background="@color/white"
-            android:src="@drawable/more_vert_24px" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/commentMenuBT"
+        android:layout_width="42dp"
+        android:layout_height="61dp"
+        android:layout_marginEnd="1dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/more_vert_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

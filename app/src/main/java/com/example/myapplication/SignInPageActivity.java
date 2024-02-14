@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -56,7 +58,7 @@ public class SignInPageActivity extends AppCompatActivity {
         else {
             newUser = new User(email, password, name, R.drawable.facebook_icon);
         }
-        UserListSrc.getInstance().addUser(newUser);
+        UserListSrc.getInstance(this).addUser(newUser);
     }
 
     private boolean checkValid() {
@@ -68,7 +70,7 @@ public class SignInPageActivity extends AppCompatActivity {
             Toast.makeText(this,"invalid email address", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (UserListSrc.getInstance().getUser(email.getText().toString()) != null) {
+        if (UserListSrc.getInstance(this).getUser(email.getText().toString()) != null) {
             Toast.makeText(this,"this email already exist", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -117,7 +119,7 @@ public class SignInPageActivity extends AppCompatActivity {
                 // Handle camera photo capture
                 // The photo is available in the intent's extras as a bitmap
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
-                profileView.setImageBitmap(photo);
+                profileView.setImageURI(BitmapUtils.bitmapToUri(this,photo));
             }
         }
     }

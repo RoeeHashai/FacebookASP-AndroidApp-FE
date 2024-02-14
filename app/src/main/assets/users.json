@@ -1,0 +1,51 @@
+[
+    {
+        "id": 1, 
+        "name": "Roee Hashai", 
+        "email": "roee.hashai@gmail.com",
+        "password": "1111",
+        "image": "/profile-pictures/roee_hashai.jpeg"
+    },
+    {
+        "id": 2, 
+        "name": "Talya Rubinstein", 
+        "email": "talya.rubinstein@gmail.com",
+        "password": "2222",
+        "image": "/profile-pictures/talya_rubinstein.jpg"
+    },
+    {
+        "id": 3, 
+        "name": "Yatir Gross", 
+        "email": "yatir.gross@gmail.com",
+        "password": "3333",
+        "image": "/profile-pictures/yatir_gross.jpg"
+    },
+    {
+        "id": 4, 
+        "name": "Natalya Gross", 
+        "email": "natalya.gross@gmail.com",
+        "password": "4444",
+        "image": "/profile-pictures/natalya_gross.jpg"
+    },
+    {
+        "id": 5, 
+        "name": "Shira Goshen", 
+        "email": "shira.goshen@gmail.com",
+        "password": "5555",
+        "image": "/profile-pictures/shira_goshen.jpg"
+    },
+    {
+        "id": 6, 
+        "name": "Tal Ziv", 
+        "email": "tal.ziv@gmail.com",
+        "password": "6666",
+        "image": "/profile-pictures/tal_ziv.jpg"
+    },
+    {
+        "id": 7, 
+        "name": "Yaara Sirkies", 
+        "email": "yaara.sirkis@gmail.com",
+        "password": "7777",
+        "image": "/profile-pictures/yaara_sir.jpg"
+    }
+]

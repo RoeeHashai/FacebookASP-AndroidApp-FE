@@ -1,0 +1,186 @@
+[
+  {
+    "id": 1,
+    "author": "roee.hashai@gmail.com",
+    "date": "01.01.2024 14:33",
+    "content": "Hey there! 👋 Welcome to the awesome Facebook App experience! 🌟 Dive into the social world and enjoy connecting with friends, sharing moments, and exploring all the amazing features. 📱✨ Have a fantastic time!",
+    "image": "/preloaded-post-images/post1.jpg",
+    "likes": 1,
+    "commentCount": 0,
+    "comments": []
+  },
+  {
+    "id": 2,
+    "author": "tal.ziv@gmail.com",
+    "date": "05.01.2024 17:01",
+    "content": "Just had an unforgettable time in London! 🇬🇧✨ Check out this amazing pic capturing the vibe of my trip. London magic in one snapshot! 📸🌆",
+    "image": "/preloaded-post-images/post2.jpg",
+    "likes": 4,
+    "commentCount": 3,
+    "comments": [
+      {
+        "id": 1,
+        "author": "roee.hashai@gmail.com",
+        "content": "Wow, London looks stunning! 🏰✨"
+      },
+      {
+        "id": 2,
+        "author": "natalya.gross@gmail.com",
+        "content": "Incredible shot! Which part of London is this?"
+      },
+      {
+        "id": 3,
+        "author": "tal.ziv@gmail.com",
+        "content": "Tower Bridge"
+      }
+
+    ]
+  },
+  {
+    "id": 3,
+    "author": "yaara.sirkis@gmail.com",
+    "date": "10.01.2024 09:12",
+    "content": "Exciting news in the family! 👶✨ Welcoming the newest member, my sister's bundle of joy born last weekend. Meet the little miracle!",
+    "image": "/preloaded-post-images/post3.jpg",
+    "likes": 3,
+    "commentCount": 1,
+    "comments": [
+      {
+        "id": 1,
+        "author": "talya.rubinstein@gmail.com",
+        "content": "Such wonderful news! Sending love to the growing family."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "author": "shira.goshen@gmail.com",
+    "date": "02.02.2024 23:38",
+    "content": "Guatamala with Uri :)",
+    "image": "/preloaded-post-images/post4.jpg",
+    "likes": 5,
+    "commentCount": 1,
+    "comments": [
+      {
+        "id": 1,
+        "author": "roee.hashai@gmail.com",
+        "content": "Woow!! looks so much fun!"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "author": "natalya.gross@gmail.com",
+    "date": "03.02.2024 15:44",
+    "content": "Just got back from an incredible trip to Mexico with Yatir Gross! 🇲🇽✨ Such a fantastic time exploring, making memories, and soaking in the beauty of Mexico. Check out this snapshot capturing a moment from our adventures 📸",
+    "image": "/preloaded-post-images/post5.jpg",
+    "likes": 5,
+    "commentCount": 3,
+    "comments": [
+      {
+        "id": 1,
+        "author": "yatir.gross@gmail.com",
+        "content": "It was amazing, Natalya"
+      },
+      {
+        "id": 2,
+        "author": "tal.ziv@gmail.com",
+        "content": "Mexico is on my travel wishlist now. Thanks for sharing!"
+      },
+      {
+        "id": 3,
+        "author": "shira.goshen@gmail.com",
+        "content": "Awesome picture!"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "author": "yaara.sirkis@gmail.com",
+    "date": "04.02.2024 19:29",
+    "content": "Sweet treat alert! 🍰🍓 Made this scrumptious dessert at home. Swipe for a taste of indulgence",
+    "image": "/preloaded-post-images/post6.jpg",
+    "likes": 4,
+    "commentCount": 2,
+    "comments": [
+      {
+        "id": 1,
+        "author": "shira.goshen@gmail.com",
+        "content": "Looks divine! Recipe, please?"
+      },
+      {
+        "id": 2,
+        "author": "yaara.sirkis@gmail.com",
+        "content": "Sure! With pleasure"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "author": "roee.hashai@gmail.com",
+    "date": "08.02.2024 11:31",
+    "content": "Lost in the vibrant lights of Times Square! 🌃🎉 The hustle, the bustle, and the iconic energy—there's nothing quite like it. Swipe to soak in the Times Square magic",
+    "image": "/preloaded-post-images/post7.jpg",
+    "likes": 3,
+    "commentCount": 3,
+    "comments": [
+      {
+        "id": 1,
+        "author": "yatir.gross@gmail.com",
+        "content": "Times Square looks electric! Did you catch a Broadway show?"
+      },
+      {
+        "id": 2,
+        "author": "roee.hashai@gmail.com",
+        "content": "Not yet, be there tomorrow"
+      },
+      {
+        "id": 3,
+        "author": "shira.goshen@gmail.com",
+        "content": "Nice shots!📸"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "author": "yatir.gross@gmail.com",
+    "date": "10.02.2024 15:03",
+    "content": "Kitchen triumph! 🍗🔥 Cooked up a delicious chicken dish that's making my taste buds dance. Swipe to savor the flavors",
+    "image": "/preloaded-post-images/post8.jpg",
+    "likes": 1,
+    "commentCount": 1,
+    "comments": [
+      {
+        "id": 1,
+        "author": "natalya.gross@gmail.com",
+        "content": "I can almost smell it through the screen! Yum!"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "author": "shira.goshen@gmail.com",
+    "date": "13.02.2024 12:58",
+    "content": "Cheers to a fitness milestone! 💪🏋️‍♀️ As Colin Powell wisely said, 'There are no secrets to success. It is the result of preparation, hard work, and learning from failure.'",
+    "image": "/preloaded-post-images/post9.jpg",
+    "likes": 5,
+    "commentCount": 1,
+    "comments": [
+      {
+        "id": 1,
+        "author": "talya.rubinstein@gmail.com",
+        "content": "Beautiful saying! Your dedication is truly inspiring"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "author": "roee.hashai@gmail.com",
+    "date": "14.02.2024 21:03",
+    "content": "Thanks for checking out our Facebook app! Your time and feedback are appreciated. We're always striving to improve, so feel free to share any thoughts you have.\nThank You!🙏🏻",
+    "likes": 0,
+    "commentCount": 0,
+    "comments": [
+    ]
+  }
+]
