@@ -11,9 +11,18 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
+/**
+ * Utility class for working with Bitmap objects.
+ */
 public class BitmapUtils {
 
+    /**
+     * Converts a Bitmap object to a Uri and saves it to the external storage.
+     *
+     * @param context The context of the application.
+     * @param bitmap  The Bitmap object to be converted.
+     * @return The Uri of the saved image file.
+     */
     public static Uri bitmapToUri(Context context, Bitmap bitmap) {
         // Get the directory for storing images
         File imagesDirectory = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);

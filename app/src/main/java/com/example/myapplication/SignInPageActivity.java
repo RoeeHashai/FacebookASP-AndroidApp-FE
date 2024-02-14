@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 
 import com.example.myapplication.entities.User;
 
+/**
+ * Activity responsible for signing in a new user.
+ */
 public class SignInPageActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -26,6 +30,7 @@ public class SignInPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in_page);
+        // Button to pick a profile photo
         Button photoPickerBT = findViewById(R.id.photoPickerBT);
         photoPickerBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,9 +38,10 @@ public class SignInPageActivity extends AppCompatActivity {
                 selectPhoto();
             }
         });
+        // Button to sign in the user
         Button signInBT = findViewById(R.id.signMeInBT);
-        signInBT.setOnClickListener( v -> {
-            if(checkValid()) {
+        signInBT.setOnClickListener(v -> {
+            if (checkValid()) {
                 signInThisUser();
                 Intent i = new Intent(this, LogInPageActivity.class);
                 startActivity(i);
@@ -43,6 +49,9 @@ public class SignInPageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Signs in the user by creating a new user object and adding it to the user list.
+     */
     private void signInThisUser() {
         EditText emailV = findViewById(R.id.userNameSignBox);
         EditText passwordV = findViewById(R.id.passSignBox);
@@ -52,46 +61,83 @@ public class SignInPageActivity extends AppCompatActivity {
         String password = passwordV.getText().toString();
         String name = nameV.getText().toString();
         User newUser;
+        // Create a new user object based on the entered details
         if (selectedImage != null) {
             newUser = new User(email, password, name, selectedImage);
-        }
-        else {
+        } else {
             newUser = new User(email, password, name, R.drawable.facebook_icon);
         }
         UserListSrc.getInstance(this).addUser(newUser);
     }
 
+    /**
+     * Checks if the entered user details are valid.
+     *
+     * @return True if the user details are valid, false otherwise.
+     */
     private boolean checkValid() {
         EditText email = findViewById(R.id.userNameSignBox);
         EditText password1 = findViewById(R.id.passSignBox);
         EditText password2 = findViewById(R.id.passVrfySignBox);
         EditText name = findViewById(R.id.displayNameBox);
+        ImageView profile = findViewById(R.id.ivProfileView);
+        // Validate email
         if (!isValidEmail(email.getText())) {
-            Toast.makeText(this,"invalid email address", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "invalid email address", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (UserListSrc.getInstance(this).getUser(email.getText().toString()) != null) {
-            Toast.makeText(this,"this email already exist", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (password1.getText().length() < 8) {
-            Toast.makeText(this,"too short password (at least 8)", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (!password1.getText().toString().equals(password2.getText().toString())) {
-            Toast.makeText(this,"the passwords aren't equal", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (name.getText().toString().length() < 2) {
-            Toast.makeText(this,"name too short (at least 2 character)", Toast.LENGTH_SHORT).show();
-            return false;
+        // Check if email already exists
+        else {
+            if (UserListSrc.getInstance(this).getUser(email.getText().toString()) != null) {
+                Toast.makeText(this, "this email already exist", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            // Validate password length
+            else {
+                if (password1.getText().length() < 8) {
+                    Toast.makeText(this, "too short password (at least 8)", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                // Validate password match
+                else {
+                    if (!password1.getText().toString().equals(password2.getText().toString())) {
+                        Toast.makeText(this, "the passwords aren't equal", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    // Validate name length
+                    else {
+                        if (name.getText().toString().length() < 2) {
+                            Toast.makeText(this, "name too short (at least 2 character)", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                        // Validate if profile picture is selected
+                        else {
+                            if (selectedImage == null) {
+                                Toast.makeText(this, "must pick a profile picture", Toast.LENGTH_SHORT).show();
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
         }
         return true;
     }
 
+    /**
+     * Checks if the given email address is valid.
+     *
+     * @param target The email address to validate.
+     * @return True if the email address is valid, false otherwise.
+     */
     private boolean isValidEmail(CharSequence target) {
         return target != null && Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
+
+    /**
+     * Opens the gallery or camera to select a profile photo.
+     */
+
     private void selectPhoto() {
         // Intent to pick an image from the gallery
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -119,7 +165,7 @@ public class SignInPageActivity extends AppCompatActivity {
                 // Handle camera photo capture
                 // The photo is available in the intent's extras as a bitmap
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
-                profileView.setImageURI(BitmapUtils.bitmapToUri(this,photo));
+                profileView.setImageURI(BitmapUtils.bitmapToUri(this, photo));
             }
         }
     }

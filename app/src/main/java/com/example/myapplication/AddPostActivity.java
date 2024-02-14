@@ -17,6 +17,9 @@ import android.widget.Toast;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.User;
 
+/**
+ * Activity for adding a new post.
+ */
 public class AddPostActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -27,9 +30,13 @@ public class AddPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_post_page);
-        String username = getIntent().getStringExtra("CURRENT_USER");
-        currentUser = UserListSrc.getInstance(this).getUser(username);
+        // Hide search button (it's not used in this activity)
+        findViewById(R.id.searchBT).setVisibility(View.GONE);
+        // Get the currently logged-in user
+        currentUser = UserListSrc.getInstance(this).getActiveUser();
+        // Set header details (profile picture and display name)
         setHeaderDetails();
+        // Set click listener for photo picker button
         Button photoPickerBT = findViewById(R.id.postImagePicker);
         photoPickerBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,18 +44,19 @@ public class AddPostActivity extends AppCompatActivity {
                 selectPhoto();
             }
         });
+        // Set click listener for publish button
         Button publishBT = findViewById(R.id.publishPostBT);
         publishBT.setOnClickListener(v -> {
             if (validPost()) {
                 publishPost();
                 Intent i = new Intent(this, FeedPageActivity.class);
-                String user = currentUser.getUserName();
-                i.putExtra("CURRENT_USER", user);
                 startActivity(i);
             }
         });
     }
-
+    /**
+     * Publishes the post to the post list.
+     */
     private void publishPost() {
         EditText contentView = findViewById(R.id.postContentBox);
         String content = contentView.getText().toString();
@@ -61,7 +69,10 @@ public class AddPostActivity extends AppCompatActivity {
         }
         PostListSrc.getInstance(this).addPost(newPost);
     }
-
+    /**
+     * Validates the post before publishing.
+     * @return True if the post is valid, false otherwise.
+     */
     private boolean validPost() {
         EditText content = findViewById(R.id.postContentBox);
         if (content.getText().toString().length() < 3 && selectedImage == null) {
@@ -70,7 +81,9 @@ public class AddPostActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    /**
+     * Sets the header details (profile picture and display name) of the current user.
+     */
     private void setHeaderDetails() {
         ImageView profile = findViewById(R.id.profileHeader);
         if (currentUser.getUriProfilePic() == null) {
@@ -82,6 +95,9 @@ public class AddPostActivity extends AppCompatActivity {
         displayName.setText(currentUser.getDisplayName());
     }
 
+    /**
+     * Starts an activity to select a photo for the post.
+     */
     private void selectPhoto() {
         // Intent to pick an image from the gallery
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -102,6 +118,7 @@ public class AddPostActivity extends AppCompatActivity {
         ImageView postImageView = findViewById(R.id.addPostImage);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (data != null && data.getData() != null) {
+                // Photo picked from the gallery
                 Uri selectedImageUri = data.getData();
                 postImageView.setImageURI(selectedImageUri);
                 selectedImage = selectedImageUri;

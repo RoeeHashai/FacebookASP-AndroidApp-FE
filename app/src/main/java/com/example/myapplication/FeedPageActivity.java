@@ -38,7 +38,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
+/**
+ * Activity for displaying the main feed page with posts.
+ */
 public class FeedPageActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageButton showMenuBt;
@@ -50,16 +52,20 @@ public class FeedPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feed_page);
-        String username = getIntent().getStringExtra("CURRENT_USER");
-        currentUser = UserListSrc.getInstance(this).getUser(username);
+        // Get the active user from the UserListSrc
+        currentUser = UserListSrc.getInstance(this).getActiveUser();
         UserListSrc.getInstance(this).setActiveUser(currentUser);
+        // Set up header details (profile image and display name)
         setHeaderDetails();
+        // Initialize RecyclerView for displaying posts
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
         adapter = new PostsListAdapter(this);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
+        // Load and display all posts
         List<Post> posts = PostListSrc.getInstance(this).getPosts();
         adapter.setPosts(posts);
+        // Set click listeners for menu, logout, and add post buttons
         showMenuBt = findViewById(R.id.menuBT);
         showMenuBt.setOnClickListener(v -> {
             showMenu(v);
@@ -67,6 +73,7 @@ public class FeedPageActivity extends AppCompatActivity {
         logoutBT = findViewById(R.id.logoutBT);
         logoutBT.setOnClickListener(v -> {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            UserListSrc.getInstance(this).setActiveUser(null);
             Intent i = new Intent(this, LogInPageActivity.class);
             startActivity(i);
         });
@@ -80,6 +87,9 @@ public class FeedPageActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Sets header details such as profile image and display name.
+     */
     private void setHeaderDetails() {
         ImageView profile = findViewById(R.id.profileHeader);
         if (currentUser.getUriProfilePic() == null) {
@@ -92,6 +102,10 @@ public class FeedPageActivity extends AppCompatActivity {
         displayName.setText(currentUser.getDisplayName());
     }
 
+    /**
+     * Displays the menu popup.
+     * @param v The view associated with the menu button.
+     */
     private void showMenu(View v) {
         PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.getMenuInflater().inflate(R.menu.nav_drawer_menu, popupMenu.getMenu());
@@ -106,7 +120,9 @@ public class FeedPageActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
-
+    /**
+     * Handles the result of selecting an image to attach to a post.
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Uri selectedImageUri;
@@ -124,6 +140,9 @@ public class FeedPageActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Changes the night mode (dark mode).
+     */
     private void changeNightMood() {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
