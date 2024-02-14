@@ -20,7 +20,7 @@ To run this project on your local machine, follow these steps:
    ```bash
    git clone https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/tree/main
   ```
-Open in Android Studio: Open the project in Android Studio.
+Open in Android Studio: Open the project in Android Studio. \n
 Run the Application: Build and run the application on an Android emulator or a physical device.
 
 ## Usage
