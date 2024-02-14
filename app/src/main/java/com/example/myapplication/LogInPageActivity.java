@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,7 +41,7 @@ public class LogInPageActivity extends AppCompatActivity {
     private boolean validUser() {
         EditText usernameBox = findViewById(R.id.usernameLogBox);
         EditText passwordBox = findViewById(R.id.passwordLogBox);
-        User thisUser = UserListSrc.getInstance().getUser(usernameBox.getText().toString());
+        User thisUser = UserListSrc.getInstance(this).getUser(usernameBox.getText().toString());
         if (thisUser == null){
             Toast.makeText(this, "no user in this Email. try again", Toast.LENGTH_SHORT).show();
             return false;

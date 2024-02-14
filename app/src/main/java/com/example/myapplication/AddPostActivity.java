@@ -28,7 +28,7 @@ public class AddPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_post_page);
         String username = getIntent().getStringExtra("CURRENT_USER");
-        currentUser = UserListSrc.getInstance().getUser(username);
+        currentUser = UserListSrc.getInstance(this).getUser(username);
         setHeaderDetails();
         Button photoPickerBT = findViewById(R.id.postImagePicker);
         photoPickerBT.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,7 @@ public class AddPostActivity extends AppCompatActivity {
         else {
             newPost = new Post(currentUser,content, selectedImage);
         }
-        PostListSrc.getInstance().addPost(newPost);
+        PostListSrc.getInstance(this).addPost(newPost);
     }
 
     private boolean validPost() {
@@ -109,7 +109,9 @@ public class AddPostActivity extends AppCompatActivity {
                 // Handle camera photo capture
                 // The photo is available in the intent's extras as a bitmap
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
-                postImageView.setImageURI(BitmapUtils.bitmapToUri(this,photo));
+                Uri selectedImageUri = BitmapUtils.bitmapToUri(this,photo);
+                postImageView.setImageURI(selectedImageUri);
+                selectedImage = selectedImageUri;
             }
         }
     }

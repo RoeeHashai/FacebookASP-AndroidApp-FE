@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.content.Context;
+
 import com.example.myapplication.entities.User;
 
 import java.util.ArrayList;
@@ -14,22 +16,19 @@ public class UserListSrc {
 
     }
 
-    public static UserListSrc getInstance() {
+    public static UserListSrc getInstance(Context context) {
         if (inst == null) {
             inst = new UserListSrc();
-            inst.initList();
+            inst.initList(context);
         }
         return inst;
     }
 
-    private void initList(){
+    private void initList(Context context){
         if (users != null)
             return;
-        users = new ArrayList<>();
-        users.add(new User("yatir@gmail.com", "12345678", "Yatir Gross", R.drawable.profile_image ));
-        users.add(new User("1", "1", "Natalya Gross", R.drawable.profile_image2));
+        users = JsonToList.createUserList(context, "users.json");
     }
-
     public User getUser(String userName) {
         for (User user: users) {
             if (user.getUserName().equals(userName)) {

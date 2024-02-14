@@ -46,10 +46,12 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         private final TextView etContent;
         private final Button makePostChangeBT;
         private final ImageButton editImage;
+        private final ImageButton deleteImage;
         private final ImageView ivPic;
         private final ImageButton commentBT;
         private final ImageButton menuBT;
         private final ImageButton likeBT;
+        private final ImageButton shareBT;
         private final TextView likeCounter;
 
         private PostViewHolder(View itemView) {
@@ -61,9 +63,11 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             etContent = itemView.findViewById(R.id.tvEditContent);
             makePostChangeBT = itemView.findViewById(R.id.makePostChangeBT);
             editImage = itemView.findViewById(R.id.editImageBT);
+            deleteImage = itemView.findViewById(R.id.deleteImageBT);
             ivPic = itemView.findViewById(R.id.ivPic);
             commentBT = itemView.findViewById(R.id.postCommentsBT);
             menuBT = itemView.findViewById(R.id.postMenu);
+            shareBT = itemView.findViewById(R.id.shareBT);
             likeBT = itemView.findViewById(R.id.likeBT);
             likeCounter = itemView.findViewById(R.id.likeCounter);
         }
@@ -85,6 +89,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
+        Context context = holder.shareBT.getContext();
         final int revposition = posts.size() - position - 1;
         if (posts != null) {
             final Post current = posts.get(revposition);
@@ -107,20 +112,26 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 holder.etContent.setVisibility(View.GONE);
                 holder.makePostChangeBT.setVisibility(View.GONE);
                 holder.editImage.setVisibility(View.GONE);
-                posts.get(revposition).setContent(holder.etContent.getText().toString());
+                holder.deleteImage.setVisibility(View.GONE);
+                current.setContent(holder.etContent.getText().toString());
+
             });
             holder.editImage.setOnClickListener(v -> {
                 posOfEditedImage = revposition;
                 selectPhoto(holder.editImage.getContext());
             });
+            holder.deleteImage.setOnClickListener(v -> {
+                holder.ivPic.setImageResource(0);
+                current.setIntPic(0);
+            });
             holder.commentBT.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.commentBT.getContext(), CommentsPageActivity.class);
-                User user = UserListSrc.getInstance().getActiveUser();
+                User user = UserListSrc.getInstance(context).getActiveUser();
                 intent.putExtra("CURRENT_POST", revposition);
                 holder.commentBT.getContext().startActivity(intent);
             });
             String postUser = posts.get(revposition).getAuthor().getUserName();
-            String currentUser = UserListSrc.getInstance().getActiveUser().getUserName();
+            String currentUser = UserListSrc.getInstance(context).getActiveUser().getUserName();
             if (postUser.equals(currentUser)) {
                 holder.menuBT.setOnClickListener(v -> {
                     showPostMenu(v, revposition, holder);
@@ -128,21 +139,24 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             } else {
                 holder.menuBT.setVisibility(View.GONE);
             }
-            if (current.isUserLiked(UserListSrc.getInstance().getActiveUser())) {
+            holder.shareBT.setOnClickListener(v -> {
+                showShareMenu(v);
+            });
+            if (current.isUserLiked(UserListSrc.getInstance(context).getActiveUser())) {
                 holder.likeBT.setBackgroundColor(Color.rgb(220, 220, 220));
             } else {
                 holder.likeBT.setBackgroundColor(Color.TRANSPARENT);
             }
             holder.likeBT.setOnClickListener(v -> {
-                if (current.isUserLiked(UserListSrc.getInstance().getActiveUser())) {
+                if (current.isUserLiked(UserListSrc.getInstance(context).getActiveUser())) {
                     current.setLikes(current.getLikes() - 1);
                     holder.likeBT.setBackgroundColor(Color.TRANSPARENT);
-                    current.removeLikedUser(UserListSrc.getInstance().getActiveUser());
+                    current.removeLikedUser(UserListSrc.getInstance(context).getActiveUser());
                     notifyDataSetChanged();
                 } else {
                     current.setLikes(current.getLikes() + 1);
                     holder.likeBT.setBackgroundColor(Color.rgb(220, 220, 220));
-                    current.addLikedUser(UserListSrc.getInstance().getActiveUser());
+                    current.addLikedUser(UserListSrc.getInstance(context).getActiveUser());
                     notifyDataSetChanged();
                 }
             });
@@ -171,8 +185,20 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                     holder.etContent.setText(holder.tvContent.getText());
                     holder.etContent.setVisibility(View.VISIBLE);
                     holder.editImage.setVisibility(View.VISIBLE);
+                    holder.deleteImage.setVisibility(View.VISIBLE);
                     holder.makePostChangeBT.setVisibility(View.VISIBLE);
                 }
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
+    private void showShareMenu(View v) {
+        PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+        popupMenu.getMenuInflater().inflate(R.menu.share_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
                 return false;
             }
         });

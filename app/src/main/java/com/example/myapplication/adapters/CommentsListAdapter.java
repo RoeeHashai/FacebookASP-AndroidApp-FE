@@ -77,7 +77,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
                 comments.get(position).setContent(holder.etContent.getText().toString());
             });
             String postUser = comments.get(position).getAuthor().getUserName();
-            String currentUser = UserListSrc.getInstance().getActiveUser().getUserName();
+            String currentUser = UserListSrc.getInstance(holder.etContent.getContext()).getActiveUser().getUserName();
             if (postUser.equals(currentUser)) {
                 holder.ivMenu.setOnClickListener(v -> {
                     showMenu(v, position, holder);

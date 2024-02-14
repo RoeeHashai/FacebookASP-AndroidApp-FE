@@ -37,6 +37,16 @@ public class Post {
         this.comments = new ArrayList<>();
     }
 
+    public Post(User author, String content, int likes, Calendar date, int pic, List<Comment> comments) {
+        this.author = author;
+        this.content = content;
+        this.likes = likes;
+        this.likedUsers = new HashSet<>();
+        this.intPic = pic;
+        this.date = date;
+        this.comments = comments;
+    }
+
     public Post(User author, String content, Uri pic) {
         this.author = author;
         this.content = content;

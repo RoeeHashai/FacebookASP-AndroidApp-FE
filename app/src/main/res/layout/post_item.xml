@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/postLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="6dp"
-    android:background="#FEFEFE">
+    android:background="?attr/backgroundColor">
 
     <LinearLayout
         android:id="@+id/topLayout"
@@ -28,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginStart="10dp"
-            android:textSize="16pt" />
+            android:textSize="16pt"
+            android:textColor="?android:textColor"/>
 
         <TextView
             android:id="@+id/postDate"
@@ -36,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAlignment="viewEnd" />
+            android:textAlignment="viewEnd"/>
     </LinearLayout>
 
     <TextView
@@ -45,8 +47,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textSize="8pt"
-        app:layout_constraintTop_toBottomOf="@id/tvEditContent" />
-
+        app:layout_constraintTop_toBottomOf="@id/tvEditContent"/>
     <EditText
         android:id="@+id/tvEditContent"
         android:layout_width="match_parent"
@@ -54,8 +55,7 @@
         android:padding="10dp"
         android:textSize="8pt"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/topLayout" />
-
+        app:layout_constraintTop_toBottomOf="@id/topLayout"/>
     <ImageView
         android:id="@+id/ivPic"
         android:layout_width="match_parent"
@@ -98,6 +98,7 @@
             android:src="@drawable/comment_24px" />
 
         <ImageButton
+            android:id="@+id/shareBT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
@@ -117,22 +118,33 @@
         android:id="@+id/makePostChangeBT"
         android:layout_width="89dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#0000FF"
+        android:backgroundTint="?attr/colorPrimary"
         android:text="done"
         android:textSize="8pt"
         android:visibility="gone"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/ivPic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEditContent" />
 
     <ImageButton
         android:id="@+id/editImageBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="?attr/backgroundColor"
         android:src="@drawable/photo_library_24px"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/ivPic"
         app:layout_constraintEnd_toStartOf="@id/makePostChangeBT"
-        app:layout_constraintTop_toBottomOf="@id/topLayout" />
+        app:layout_constraintTop_toBottomOf="@id/tvEditContent" />
+    <ImageButton
+        android:id="@+id/deleteImageBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:src="@drawable/delete_24px"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/ivPic"
+        app:layout_constraintEnd_toStartOf="@id/editImageBT"
+        app:layout_constraintTop_toBottomOf="@id/tvEditContent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

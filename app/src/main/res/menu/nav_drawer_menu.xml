@@ -15,8 +15,8 @@
         android:title="@string/settings" />
 
     <item
-        android:id="@+id/logoutItem"
-        android:icon="@drawable/logout_24px"
-        android:title="@string/log_out" />
+        android:id="@+id/darkMoodItem"
+        android:icon="@drawable/contrast_24px"
+        android:title="@string/dark_light" />
 
 </menu>

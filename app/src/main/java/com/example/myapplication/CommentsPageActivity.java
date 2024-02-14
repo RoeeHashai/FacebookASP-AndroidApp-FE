@@ -27,7 +27,7 @@ public class CommentsPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comments_page_activity);
         int position = getIntent().getIntExtra("CURRENT_POST", -1);
-        currentPost = PostListSrc.getInstance().getPosts().get(position);
+        currentPost = PostListSrc.getInstance(this).getPosts().get(position);
         RecyclerView lstComments = findViewById(R.id.lstComments);
         final CommentsListAdapter adapter = new CommentsListAdapter(this);
         lstComments.setAdapter(adapter);
@@ -38,7 +38,7 @@ public class CommentsPageActivity extends AppCompatActivity {
             EditText contentView = findViewById(R.id.commentContentBox);
             String content = contentView.getText().toString();
             if (content.length() != 0) {
-                currentPost.addComment(UserListSrc.getInstance().getActiveUser(), content);
+                currentPost.addComment(UserListSrc.getInstance(this).getActiveUser(), content);
             }
             contentView.setText("");
             setAllComment(adapter);

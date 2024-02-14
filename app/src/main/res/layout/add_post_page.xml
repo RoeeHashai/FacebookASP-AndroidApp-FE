@@ -14,13 +14,14 @@
         android:id="@+id/publishPostBT"
         android:layout_width="190dp"
         android:layout_height="83dp"
-        android:backgroundTint="#0000FF"
+        android:backgroundTint="?attr/colorPrimary"
         android:text="Publish"
         android:textSize="16pt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/addPostImage" />
 
     <EditText
@@ -34,6 +35,7 @@
         android:inputType="textMultiLine"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:textColor="?android:textColor"
         app:layout_constraintBottom_toTopOf="@+id/addPostImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -55,10 +57,11 @@
         android:id="@+id/postImagePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#0000FF"
+        android:backgroundTint="?attr/colorPrimary"
         android:text="@string/choose_photo"
         app:layout_constraintBottom_toTopOf="@+id/addPostImage"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postContentBox" />
 </androidx.constraintlayout.widget.ConstraintLayout>

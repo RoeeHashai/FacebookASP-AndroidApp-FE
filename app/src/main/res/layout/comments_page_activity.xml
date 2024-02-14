@@ -10,6 +10,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomFeedLayout"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
@@ -25,7 +26,7 @@
         android:id="@+id/bottomFeedLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/backgroundColor"
         android:orientation="horizontal"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent">
