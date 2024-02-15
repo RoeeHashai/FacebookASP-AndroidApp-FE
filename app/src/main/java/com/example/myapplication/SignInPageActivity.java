@@ -24,7 +24,7 @@ import com.example.myapplication.entities.User;
 public class SignInPageActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private Uri selectedImage;
+    public Uri selectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +165,9 @@ public class SignInPageActivity extends AppCompatActivity {
                 // Handle camera photo capture
                 // The photo is available in the intent's extras as a bitmap
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
-                profileView.setImageURI(BitmapUtils.bitmapToUri(this, photo));
+                Uri selectedImageUri = BitmapUtils.bitmapToUri(this, photo);
+                profileView.setImageURI(selectedImageUri);
+                selectedImage = selectedImageUri;
             }
         }
     }
