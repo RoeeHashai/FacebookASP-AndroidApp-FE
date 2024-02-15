@@ -59,10 +59,10 @@ public class LogInPageActivity extends AppCompatActivity {
             return false;
         }
         // Check if the entered password matches the user's password
-        if (thisUser.isMachingPassword(passwordBox.getText().toString())){
-            return true;
+        if (!thisUser.isMachingPassword(passwordBox.getText().toString())){
+            Toast.makeText(this, "wrong password. try again", Toast.LENGTH_SHORT).show();
+            return false;
         }
-        Toast.makeText(this, "wrong password. try again", Toast.LENGTH_SHORT).show();
-        return false;
+        return true;
     }
 }
