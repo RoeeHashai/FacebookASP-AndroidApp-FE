@@ -58,4 +58,14 @@ public class PostListSrc {
     public void addPost(Post post) {
         posts.add(post);
     }
+
+    public List<Post> getPostsOf (User user) {
+        List<Post> userPosts = new ArrayList<>();
+        for (Post post : this.posts) {
+            if (post.getAuthor().equals(user)) {
+                userPosts.add(post);
+            }
+        }
+        return userPosts;
+    }
 }

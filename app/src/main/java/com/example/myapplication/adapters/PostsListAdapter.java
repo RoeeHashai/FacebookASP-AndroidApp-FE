@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.CommentsPageActivity;
 import com.example.myapplication.FeedPageActivity;
+import com.example.myapplication.ProfileActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Post;
@@ -100,12 +101,18 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             final Post current = posts.get(revposition);
             // Set author name
             holder.tvAuthor.setText(current.getAuthor().getDisplayName());
+            holder.tvAuthor.setOnClickListener(v -> {
+                openHisProfile(current.getAuthor(), v, v.getContext());
+            });
             // Set profile picture
             if (current.getAuthor().getUriProfilePic() != null) {
                 holder.ivProfile.setImageURI(current.getAuthor().getUriProfilePic());
             } else {
                 holder.ivProfile.setImageResource(current.getAuthor().getIntProfilePic());
             }
+            holder.ivProfile.setOnClickListener(v -> {
+                openHisProfile(current.getAuthor(), v, v.getContext());
+            });
             // Set post content
             holder.tvContent.setText(current.getContent());
             // Set post date
@@ -258,5 +265,11 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
         // Start the activity based on the user's choice
         ((Activity) context).startActivityForResult(chooserIntent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private void openHisProfile(User user,View v, Context context) {
+        Intent intent = new Intent(context, ProfileActivity.class);
+        intent.putExtra("USER", user.getUserName());
+        context.startActivity(intent);
     }
 }
