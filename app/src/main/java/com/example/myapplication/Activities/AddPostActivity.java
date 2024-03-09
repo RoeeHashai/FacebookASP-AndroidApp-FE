@@ -1,6 +1,7 @@
-package com.example.myapplication;
+package com.example.myapplication.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,17 +15,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Base64Utils;
+import com.example.myapplication.BitmapUtils;
+import com.example.myapplication.MyJWTtoken;
+import com.example.myapplication.R;
+import com.example.myapplication.UserDetails;
+import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.User;
+import com.example.myapplication.viewmodels.PostsViewModel;
+
+import java.io.IOException;
 
 /**
  * Activity for adding a new post.
  */
 public class AddPostActivity extends AppCompatActivity {
-
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private Uri selectedImage;
-    private User currentUser;
+    private UserDetails currentUser;
+    private PostsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,24 +43,19 @@ public class AddPostActivity extends AppCompatActivity {
         // Hide search button (it's not used in this activity)
         findViewById(R.id.searchBT).setVisibility(View.GONE);
         // Get the currently logged-in user
-        currentUser = UserListSrc.getInstance(this).getActiveUser();
+        currentUser = MyJWTtoken.getInstance().getUserDetails().getValue();
         // Set header details (profile picture and display name)
         setHeaderDetails();
         // Set click listener for photo picker button
         Button photoPickerBT = findViewById(R.id.postImagePicker);
-        photoPickerBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectPhoto();
-            }
-        });
+        viewModel = new ViewModelProvider(this).get(PostsViewModel.class);
+        photoPickerBT.setOnClickListener(v -> selectPhoto());
         // Set click listener for publish button
         Button publishBT = findViewById(R.id.publishPostBT);
         publishBT.setOnClickListener(v -> {
             if (validPost()) {
                 publishPost();
-                Intent i = new Intent(this, FeedPageActivity.class);
-                startActivity(i);
+                finish();
             }
         });
     }
@@ -60,14 +65,19 @@ public class AddPostActivity extends AppCompatActivity {
     private void publishPost() {
         EditText contentView = findViewById(R.id.postContentBox);
         String content = contentView.getText().toString();
-        Post newPost;
-        if (selectedImage == null) {
-            newPost = new Post(currentUser, content);
+        Post newPost = new Post();
+        if (selectedImage != null) {
+            try {
+                newPost.setImage(Base64Utils.uriToBase64(selectedImage));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         else {
-            newPost = new Post(currentUser,content, selectedImage);
+            newPost.setImage("");
         }
-        PostListSrc.getInstance(this).addPost(newPost);
+        newPost.setContent(content);
+        viewModel.createPost(newPost);
     }
     /**
      * Validates the post before publishing.
@@ -86,13 +96,13 @@ public class AddPostActivity extends AppCompatActivity {
      */
     private void setHeaderDetails() {
         ImageView profile = findViewById(R.id.profileHeader);
-        if (currentUser.getUriProfilePic() == null) {
-            profile.setImageResource(currentUser.getIntProfilePic());
-        } else {
-            profile.setImageURI(currentUser.getUriProfilePic());
+        try {
+            profile.setImageURI(Base64Utils.base64ToUri(currentUser.getImage()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         TextView displayName = findViewById(R.id.NameHeaderText);
-        displayName.setText(currentUser.getDisplayName());
+        displayName.setText(currentUser.getName());
     }
 
     /**

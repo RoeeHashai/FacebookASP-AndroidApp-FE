@@ -23,22 +23,34 @@
             android:cropToPadding="false"
             android:src="@drawable/account_circle_24px" />
 
-        <TextView
-            android:id="@+id/tvAuthor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="10dp"
-            android:textSize="16pt"
-            android:textColor="?android:textColor"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/postDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textAlignment="viewEnd"/>
+            <TextView
+                android:id="@+id/tvAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="8dp"
+                android:textColor="?android:textColor"
+                android:textSize="16pt"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/postDate"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/postDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textAlignment="viewEnd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <TextView
@@ -47,7 +59,8 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textSize="8pt"
-        app:layout_constraintTop_toBottomOf="@id/tvEditContent"/>
+        app:layout_constraintTop_toBottomOf="@id/tvEditContent" />
+
     <EditText
         android:id="@+id/tvEditContent"
         android:layout_width="match_parent"
@@ -55,7 +68,8 @@
         android:padding="10dp"
         android:textSize="8pt"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/topLayout"/>
+        app:layout_constraintTop_toBottomOf="@id/topLayout" />
+
     <ImageView
         android:id="@+id/ivPic"
         android:layout_width="match_parent"
@@ -80,7 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="10pt"/>
+            android:textSize="10pt" />
+
         <ImageButton
             android:id="@+id/likeBT"
             android:layout_width="wrap_content"
@@ -120,9 +135,9 @@
         android:layout_height="wrap_content"
         android:backgroundTint="?attr/colorPrimary"
         android:text="done"
+        android:textColor="@color/white"
         android:textSize="8pt"
         android:visibility="gone"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/ivPic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEditContent" />
@@ -137,6 +152,7 @@
         app:layout_constraintBottom_toTopOf="@id/ivPic"
         app:layout_constraintEnd_toStartOf="@id/makePostChangeBT"
         app:layout_constraintTop_toBottomOf="@id/tvEditContent" />
+
     <ImageButton
         android:id="@+id/deleteImageBT"
         android:layout_width="wrap_content"

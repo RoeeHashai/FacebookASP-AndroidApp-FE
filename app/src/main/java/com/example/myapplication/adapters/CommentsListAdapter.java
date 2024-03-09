@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Comment;
-import com.example.myapplication.entities.Post;
 
 import java.util.List;
 /**
@@ -61,11 +59,11 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
-        if (comments != null) {
+        /*if (comments != null) {
             // Get the current comment
             final Comment current = comments.get(position);
             // Set author name
-            holder.tvAuthor.setText(current.getAuthor().getDisplayName());
+            holder.tvAuthor.setText(current.getAuthor().getName());
             // Set profile picture
             if (current.getAuthor().getUriProfilePic() != null) {
                 holder.ivProfile.setImageURI(current.getAuthor().getUriProfilePic());
@@ -83,8 +81,8 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
                 comments.get(position).setContent(holder.etContent.getText().toString());
             });
             // Show edit/delete menu only for the author of the comment
-            String postUser = comments.get(position).getAuthor().getUserName();
-            String currentUser = UserListSrc.getInstance(holder.etContent.getContext()).getActiveUser().getUserName();
+            String postUser = comments.get(position).getAuthor().getEmail();
+            String currentUser = UserListSrc.getInstance(holder.etContent.getContext()).getActiveUser().getEmail();
             if (postUser.equals(currentUser)) {
                 holder.ivMenu.setOnClickListener(v -> {
                     showMenu(v, position, holder);
@@ -92,7 +90,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
             } else {
                 holder.ivMenu.setVisibility(View.GONE);
             }
-        }
+        }*/
     }
 
     // Show popup menu for edit/delete options

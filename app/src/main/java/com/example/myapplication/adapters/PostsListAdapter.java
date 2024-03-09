@@ -1,12 +1,9 @@
 package com.example.myapplication.adapters;
 
-import static androidx.core.app.ActivityCompat.startActivityForResult;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,15 +17,19 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.CommentsPageActivity;
-import com.example.myapplication.FeedPageActivity;
-import com.example.myapplication.ProfileActivity;
+import com.example.myapplication.Activities.CommentsPageActivity;
+import com.example.myapplication.Activities.ProfileActivity;
+import com.example.myapplication.Base64Utils;
+import com.example.myapplication.DateConverter;
+import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.User;
 
+import java.io.IOException;
 import java.util.List;
+
 /**
  * Adapter for displaying a list of posts in a RecyclerView.
  */
@@ -40,6 +41,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
     public int getPosOfEditedImage() {
         return posOfEditedImage;
     }
+
     /**
      * ViewHolder for individual posts
      */
@@ -96,35 +98,33 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
         Context context = holder.shareBT.getContext();
-        final int revposition = posts.size() - position - 1;
         if (posts != null) {
-            final Post current = posts.get(revposition);
+            final Post current = posts.get(position);
             // Set author name
-            holder.tvAuthor.setText(current.getAuthor().getDisplayName());
-            holder.tvAuthor.setOnClickListener(v -> {
-                openHisProfile(current.getAuthor(), v, v.getContext());
-            });
+            holder.tvAuthor.setText(current.getAuthor().getName());
             // Set profile picture
-            if (current.getAuthor().getUriProfilePic() != null) {
-                holder.ivProfile.setImageURI(current.getAuthor().getUriProfilePic());
-            } else {
-                holder.ivProfile.setImageResource(current.getAuthor().getIntProfilePic());
+            try {
+                holder.ivProfile.setImageURI(Base64Utils.base64ToUri(current.getAuthor().getImage()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            holder.ivProfile.setOnClickListener(v -> {
-                openHisProfile(current.getAuthor(), v, v.getContext());
-            });
             // Set post content
             holder.tvContent.setText(current.getContent());
             // Set post date
-            holder.tvDate.setText(current.getDate());
+            holder.tvDate.setText(DateConverter.fromDBtoDisplay(current.getDate()));
             // Set post image
-            if (current.getUriPic() == null) {
-                holder.ivPic.setImageResource(current.getIntPic());
-            } else {
-                holder.ivPic.setImageURI(current.getUriPic());
+            if (!current.getImage().isEmpty() && !(current.getImage() == null)) {
+                try {
+                    holder.ivPic.setImageURI(Base64Utils.base64ToUri(current.getImage()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else {
+                holder.ivPic.setImageDrawable(null);
             }
             // Handle editing post functionality
-            holder.makePostChangeBT.setOnClickListener(v -> {
+            /*holder.makePostChangeBT.setOnClickListener(v -> {
                 holder.tvContent.setHeight(holder.etContent.getHeight());
                 holder.tvContent.setText(holder.etContent.getText());
                 holder.etContent.setVisibility(View.GONE);
@@ -132,30 +132,29 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 holder.editImage.setVisibility(View.GONE);
                 holder.deleteImage.setVisibility(View.GONE);
                 current.setContent(holder.etContent.getText().toString());
-            });
+            });*/
             // Handle editing post image functionality
-            holder.editImage.setOnClickListener(v -> {
+            /*holder.editImage.setOnClickListener(v -> {
                 posOfEditedImage = revposition;
                 selectPhoto(holder.editImage.getContext());
-            });
+            });*/
             // Handle deleting post image functionality
-            holder.deleteImage.setOnClickListener(v -> {
+            /*holder.deleteImage.setOnClickListener(v -> {
                 holder.ivPic.setImageResource(0);
                 current.setIntPic(0);
-            });
+            });*/
             // Handle opening comments page
             holder.commentBT.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.commentBT.getContext(), CommentsPageActivity.class);
-                User user = UserListSrc.getInstance(context).getActiveUser();
-                intent.putExtra("CURRENT_POST", revposition);
+                intent.putExtra("CURRENT_POST", current.get_id());
                 holder.commentBT.getContext().startActivity(intent);
             });
             // Show post menu for the author of the post
-            String postUser = posts.get(revposition).getAuthor().getUserName();
-            String currentUser = UserListSrc.getInstance(context).getActiveUser().getUserName();
+            String postUser = current.getAuthor().get_id();
+            String currentUser = MyJWTtoken.getInstance().getUserDetails().getValue().get_id();
             if (postUser.equals(currentUser)) {
                 holder.menuBT.setOnClickListener(v -> {
-                    showPostMenu(v, revposition, holder);
+                    showPostMenu(v, holder);
                 });
                 holder.menuBT.setVisibility(View.VISIBLE);
             } else {
@@ -165,38 +164,29 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             holder.shareBT.setOnClickListener(v -> {
                 showShareMenu(v);
             });
-            if (current.isUserLiked(UserListSrc.getInstance(context).getActiveUser())) {
+            if (current.getLikes().contains(MyJWTtoken.getInstance().getUserDetails().getValue().get_id())) {
                 holder.likeBT.setBackgroundColor(Color.rgb(220, 220, 220));
             } else {
                 holder.likeBT.setBackgroundColor(Color.TRANSPARENT);
             }
             // Handle like functionality
             holder.likeBT.setOnClickListener(v -> {
-                if (current.isUserLiked(UserListSrc.getInstance(context).getActiveUser())) {
-                    current.setLikes(current.getLikes() - 1);
-                    holder.likeBT.setBackgroundColor(Color.TRANSPARENT);
-                    current.removeLikedUser(UserListSrc.getInstance(context).getActiveUser());
-                    notifyDataSetChanged();
-                } else {
-                    current.setLikes(current.getLikes() + 1);
-                    holder.likeBT.setBackgroundColor(Color.rgb(220, 220, 220));
-                    current.addLikedUser(UserListSrc.getInstance(context).getActiveUser());
-                    notifyDataSetChanged();
-                }
+                // like operation ! missing
             });
             // Display like counter
             String likes = "";
-            if (current.getLikes() >= 1000) {
-                likes = current.getLikes() / 1000 + "K";
+            if (current.getLikes().size() >= 1000) {
+                likes = current.getLikes().size() / 1000 + "K";
             } else {
-                likes += current.getLikes();
+                likes += current.getLikes().size();
             }
             holder.likeCounter.setText(likes);
         }
+
     }
 
     // Show post menu for edit/delete options
-    private void showPostMenu(View v, int position, PostViewHolder holder) {
+    private void showPostMenu(View v, PostViewHolder holder) {
         PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
         popupMenu.getMenuInflater().inflate(R.menu.edit_delete_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -204,17 +194,9 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.deleteItem) {
                     // Delete the post
-                    posts.remove(position);
-                    notifyDataSetChanged();
                     return true;
                 } else if (item.getItemId() == R.id.editItem) {
                     // Edit the post
-                    holder.tvContent.setHeight(0);
-                    holder.etContent.setText(holder.tvContent.getText());
-                    holder.etContent.setVisibility(View.VISIBLE);
-                    holder.editImage.setVisibility(View.VISIBLE);
-                    holder.deleteImage.setVisibility(View.VISIBLE);
-                    holder.makePostChangeBT.setVisibility(View.VISIBLE);
                     return true;
                 }
                 return false;
@@ -222,6 +204,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         });
         popupMenu.show();
     }
+
     // Show share menu
     private void showShareMenu(View v) {
         PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
@@ -240,6 +223,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         posts = s;
         notifyDataSetChanged();
     }
+
     // Return the number of posts
     @Override
     public int getItemCount() {
@@ -247,6 +231,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             return posts.size();
         else return 0;
     }
+
     // Get posts
     public List<Post> getPosts() {
         return posts;
@@ -267,9 +252,9 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         ((Activity) context).startActivityForResult(chooserIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-    private void openHisProfile(User user,View v, Context context) {
+    private void openHisProfile(User user, View v, Context context) {
         Intent intent = new Intent(context, ProfileActivity.class);
-        intent.putExtra("USER", user.getUserName());
+        intent.putExtra("USER", user.getEmail());
         context.startActivity(intent);
     }
 }

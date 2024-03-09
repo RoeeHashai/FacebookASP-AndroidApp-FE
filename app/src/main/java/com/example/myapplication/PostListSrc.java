@@ -38,7 +38,7 @@ public class PostListSrc {
     private void initList(Context context){
         if (posts != null)
             return;
-        posts = JsonToList.createPostList(context, "posts.json");
+        //posts = JsonToList.createPostList(context, "posts.json");
     }
 
     /**

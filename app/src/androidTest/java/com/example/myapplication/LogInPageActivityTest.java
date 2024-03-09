@@ -1,8 +1,5 @@
 package com.example.myapplication;
 
-import android.content.Context;
-
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -19,6 +16,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import com.example.myapplication.Activities.LogInPageActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest

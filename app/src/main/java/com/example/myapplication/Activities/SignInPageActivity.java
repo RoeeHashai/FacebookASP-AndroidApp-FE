@@ -1,10 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +14,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.myapplication.Activities.LogInPageActivity;
+import com.example.myapplication.Base64Utils;
+import com.example.myapplication.BitmapUtils;
+import com.example.myapplication.R;
+import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.User;
+import com.example.myapplication.viewmodels.UsersViewModel;
+
+import java.io.IOException;
 
 /**
  * Activity responsible for signing in a new user.
@@ -25,27 +31,27 @@ public class SignInPageActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     public Uri selectedImage;
+    private UsersViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in_page);
+        viewModel = new UsersViewModel();
         // Button to pick a profile photo
         Button photoPickerBT = findViewById(R.id.photoPickerBT);
-        photoPickerBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectPhoto();
-            }
-        });
+        photoPickerBT.setOnClickListener(v -> selectPhoto());
         // Button to sign in the user
         Button signInBT = findViewById(R.id.signMeInBT);
         signInBT.setOnClickListener(v -> {
             if (checkValid()) {
                 signInThisUser();
-                Intent i = new Intent(this, LogInPageActivity.class);
-                startActivity(i);
             }
+        });
+        Button goToLogInBT = findViewById(R.id.goToLogInBT);
+        goToLogInBT.setOnClickListener(v -> {
+            Intent i = new Intent(this, LogInPageActivity.class);
+            startActivity(i);
         });
     }
 
@@ -63,11 +69,13 @@ public class SignInPageActivity extends AppCompatActivity {
         User newUser;
         // Create a new user object based on the entered details
         if (selectedImage != null) {
-            newUser = new User(email, password, name, selectedImage);
-        } else {
-            newUser = new User(email, password, name, R.drawable.facebook_icon);
+            try {
+                newUser = new User(email, password, name, Base64Utils.uriToBase64(selectedImage));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            viewModel.createUser(newUser);
         }
-        UserListSrc.getInstance(this).addUser(newUser);
     }
 
     /**
@@ -86,36 +94,29 @@ public class SignInPageActivity extends AppCompatActivity {
             Toast.makeText(this, "invalid email address", Toast.LENGTH_SHORT).show();
             return false;
         }
-        // Check if email already exists
+        // Validate password length
         else {
-            if (UserListSrc.getInstance(this).getUser(email.getText().toString()) != null) {
-                Toast.makeText(this, "this email already exist", Toast.LENGTH_SHORT).show();
+            if (password1.getText().length() < 8) {
+                Toast.makeText(this, "too short password (at least 8)", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            // Validate password length
+            // Validate password match
             else {
-                if (password1.getText().length() < 8) {
-                    Toast.makeText(this, "too short password (at least 8)", Toast.LENGTH_SHORT).show();
+                if (!password1.getText().toString().equals(password2.getText().toString())) {
+                    Toast.makeText(this, "the passwords aren't equal", Toast.LENGTH_SHORT).show();
                     return false;
                 }
-                // Validate password match
+                // Validate name length
                 else {
-                    if (!password1.getText().toString().equals(password2.getText().toString())) {
-                        Toast.makeText(this, "the passwords aren't equal", Toast.LENGTH_SHORT).show();
+                    if (name.getText().toString().length() < 2) {
+                        Toast.makeText(this, "name too short (at least 2 character)", Toast.LENGTH_SHORT).show();
                         return false;
                     }
-                    // Validate name length
+                    // Validate if profile picture is selected
                     else {
-                        if (name.getText().toString().length() < 2) {
-                            Toast.makeText(this, "name too short (at least 2 character)", Toast.LENGTH_SHORT).show();
+                        if (selectedImage == null) {
+                            Toast.makeText(this, "must pick a profile picture", Toast.LENGTH_SHORT).show();
                             return false;
-                        }
-                        // Validate if profile picture is selected
-                        else {
-                            if (selectedImage == null) {
-                                Toast.makeText(this, "must pick a profile picture", Toast.LENGTH_SHORT).show();
-                                return false;
-                            }
                         }
                     }
                 }

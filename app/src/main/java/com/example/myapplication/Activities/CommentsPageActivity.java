@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.myapplication.PostListSrc;
+import com.example.myapplication.R;
+import com.example.myapplication.UserListSrc;
 import com.example.myapplication.adapters.CommentsListAdapter;
-import com.example.myapplication.adapters.PostsListAdapter;
 import com.example.myapplication.entities.Comment;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.User;
@@ -44,7 +46,7 @@ public class CommentsPageActivity extends AppCompatActivity {
             EditText contentView = findViewById(R.id.commentContentBox);
             String content = contentView.getText().toString();
             if (content.length() != 0) {
-                currentPost.addComment(UserListSrc.getInstance(this).getActiveUser(), content);
+                //currentPost.addComment(UserListSrc.getInstance(this).getActiveUser(), content);
             }
             // Clear the content of the comment box after adding the comment
             contentView.setText("");
@@ -58,7 +60,7 @@ public class CommentsPageActivity extends AppCompatActivity {
      * @param adapter The adapter for displaying comments.
      */
     private void setAllComment(CommentsListAdapter adapter) {
-        List<Comment> comments = currentPost.getComments();
-        adapter.setComment(comments);
+        //List<Comment> comments = currentPost.getComments();
+        //adapter.setComment(comments);
     }
 }
