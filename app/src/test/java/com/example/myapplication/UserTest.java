@@ -29,12 +29,12 @@ public class UserTest {
 
     @Test
     public void testGetUserName() {
-        assertEquals(userName, user.getUserName());
+        assertEquals(userName, user.getEmail());
     }
 
     @Test
     public void testGetDisplayName() {
-        assertEquals(displayName, user.getDisplayName());
+        assertEquals(displayName, user.getName());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class UserTest {
 
     @Test
     public void testGetProfilePicUri() {
-        user.setProfilePic(profilePicUri);
+        user.setImage(profilePicUri);
         assertEquals(profilePicUri, user.getUriProfilePic());
     }
 
@@ -60,14 +60,14 @@ public class UserTest {
 
     @Test
     public void testSetProfilePicWithResourceId() {
-        user.setProfilePic(profilePicResource);
+        user.setImage(profilePicResource);
         assertEquals(profilePicResource, user.getIntProfilePic());
         assertEquals(null, user.getUriProfilePic());
     }
 
     @Test
     public void testSetProfilePicWithUri() {
-        user.setProfilePic(profilePicUri);
+        user.setImage(profilePicUri);
         assertEquals(profilePicUri, user.getUriProfilePic());
         assertEquals(0, user.getIntProfilePic());
     }
