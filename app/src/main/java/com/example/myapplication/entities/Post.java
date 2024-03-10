@@ -3,11 +3,14 @@ package com.example.myapplication.entities;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
+import com.example.myapplication.BlobTypeConverter;
 import com.example.myapplication.StringListConverter;
 import com.example.myapplication.UserDetails;
 
@@ -35,6 +38,7 @@ public class Post {
     @Embedded
     private UserDetails author;
     private String content;
+
     private String image;
     @TypeConverters({StringListConverter.class})
     private List<String> likes;

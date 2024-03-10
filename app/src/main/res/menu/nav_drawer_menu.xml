@@ -10,9 +10,9 @@
         android:icon="@drawable/account_circle_24px"
         android:title="@string/profile" />
     <item
-        android:id="@+id/settingItem"
-        android:icon="@drawable/settings_24px"
-        android:title="@string/settings" />
+        android:id="@+id/editUserItem"
+        android:icon="@drawable/edit_24px"
+        android:title="@string/edit_user" />
 
     <item
         android:id="@+id/darkMoodItem"

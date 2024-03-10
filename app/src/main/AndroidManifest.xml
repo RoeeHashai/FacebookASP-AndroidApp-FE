@@ -20,8 +20,11 @@
         android:roundIcon="@drawable/facebook_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="31"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".Activities.EditUserActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.ProfileActivity"
             android:exported="false" />

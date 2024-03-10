@@ -38,4 +38,16 @@ public class PostsViewModel extends ViewModel {
         repository.createPost(post);
         reload();
     }
+    public void likePost(String pid){
+        repository.likePost(pid);
+    }
+    public void unlikePost(String pid){
+        repository.unlikePost(pid);
+    }
+    public void deletePost(String pid){
+        repository.deletePost(pid);
+    }
+    public void updatePost(String pid, Post post){
+        repository.updatePost(pid, post);
+    }
 }

@@ -38,7 +38,8 @@ public class PostsRepository {
         protected void onActive() {
             super.onActive();
             new Thread(() -> {
-                postListData.postValue(dao.index());
+                //postListData.postValue(dao.index());
+                postListData.postValue(postListData.getValue());
             }).start();
         }
     }
@@ -57,6 +58,19 @@ public class PostsRepository {
 
     public void createPost(Post post) {
         api.createPost(post);
+    }
+
+    public void likePost(String pid) {
+        api.likePost(pid);
+    }
+    public void unlikePost(String pid) {
+        api.unlikePost(pid);
+    }
+    public void deletePost(String pid) {
+        api.deletePost(pid);
+    }
+    public void updatePost(String pid, Post post) {
+        api.updatePost(pid, post);
     }
 }
 

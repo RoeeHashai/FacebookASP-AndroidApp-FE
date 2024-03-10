@@ -15,7 +15,7 @@ public interface PostDao {
     List<Post> index();
 
     @Query("SELECT * FROM post WHERE id = :id")
-    Post get(int id);
+    Post get(String id);
 
     @Query("DELETE FROM post")
     void clear();
@@ -31,5 +31,8 @@ public interface PostDao {
 
     @Delete
     void delete(Post... posts);
+
+    @Query("SELECT COUNT(*) FROM post")
+    int getPostCount();
 }
 

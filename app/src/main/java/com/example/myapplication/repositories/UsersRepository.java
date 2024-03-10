@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.myapplication.LoginRequest;
 import com.example.myapplication.R;
+import com.example.myapplication.UserDetails;
 import com.example.myapplication.api.UserAPI;
 import com.example.myapplication.api.WebServiceAPI;
 import com.example.myapplication.entities.User;
@@ -25,6 +26,9 @@ public class UsersRepository {
     }
     public void login(LoginRequest loginRequest) {
         api.getToken(loginRequest);
+    }
+    public void editUser(UserDetails userDetails) {
+        api.editUser(userDetails);
     }
 }
 
