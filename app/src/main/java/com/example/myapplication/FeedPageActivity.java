@@ -46,7 +46,7 @@ public class FeedPageActivity extends AppCompatActivity {
     private ImageButton showMenuBt;
     private ImageButton logoutBT;
     private ImageButton addPostBT;
-    PostsListAdapter adapter;
+    protected PostsListAdapter adapter;
     public User currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class FeedPageActivity extends AppCompatActivity {
         currentUser = UserListSrc.getInstance(this).getActiveUser();
         UserListSrc.getInstance(this).setActiveUser(currentUser);
         // Set up header details (profile image and display name)
-        setHeaderDetails();
+        setHeaderDetails(currentUser);
         // Initialize RecyclerView for displaying posts
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
         adapter = new PostsListAdapter(this);
@@ -90,16 +90,16 @@ public class FeedPageActivity extends AppCompatActivity {
     /**
      * Sets header details such as profile image and display name.
      */
-    private void setHeaderDetails() {
+    protected void setHeaderDetails(User user) {
         ImageView profile = findViewById(R.id.profileHeader);
-        if (currentUser.getUriProfilePic() == null) {
-            profile.setImageResource(currentUser.getIntProfilePic());
+        if (user.getUriProfilePic() == null) {
+            profile.setImageResource(user.getIntProfilePic());
         }
         else {
-            profile.setImageURI(currentUser.getUriProfilePic());
+            profile.setImageURI(user.getUriProfilePic());
         }
         TextView displayName = findViewById(R.id.NameHeaderText);
-        displayName.setText(currentUser.getDisplayName());
+        displayName.setText(user.getDisplayName());
     }
 
     /**
@@ -114,6 +114,19 @@ public class FeedPageActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId() == R.id.darkMoodItem) {
                     changeNightMood();
+                    return true;
+                }
+                if (item.getItemId() == R.id.profileItem) {
+                    Intent i = new Intent(v.getContext(), ProfileActivity.class);
+                    String user = currentUser.getUserName();
+                    i.putExtra("USER", user);
+                    startActivity(i);
+                    return true;
+                }
+                if (item.getItemId() == R.id.homeItem) {
+                    Intent i = new Intent(v.getContext(), FeedPageActivity.class);
+                    startActivity(i);
+                    return true;
                 }
                 return false;
             }
