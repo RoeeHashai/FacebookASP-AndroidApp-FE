@@ -15,6 +15,11 @@
         android:title="@string/edit_user" />
 
     <item
+        android:id="@+id/deleteUserItem"
+        android:icon="@drawable/delete_24px"
+        android:title="@string/delete_user" />
+
+    <item
         android:id="@+id/darkMoodItem"
         android:icon="@drawable/contrast_24px"
         android:title="@string/dark_light" />

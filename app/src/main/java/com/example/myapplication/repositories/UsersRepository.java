@@ -30,5 +30,8 @@ public class UsersRepository {
     public void editUser(UserDetails userDetails) {
         api.editUser(userDetails);
     }
+    public void deleteUser() {
+        api.deleteUser();
+    }
 }
 

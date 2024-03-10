@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,12 +23,9 @@ import android.widget.TextView;
 import com.example.myapplication.Base64Utils;
 import com.example.myapplication.BitmapUtils;
 import com.example.myapplication.MyJWTtoken;
-import com.example.myapplication.PostListSrc;
 import com.example.myapplication.R;
 import com.example.myapplication.UserDetails;
-import com.example.myapplication.UserListSrc;
 import com.example.myapplication.adapters.PostsListAdapter;
-import com.example.myapplication.entities.User;
 import com.example.myapplication.viewmodels.PostsViewModel;
 import com.example.myapplication.viewmodels.UsersViewModel;
 
@@ -44,6 +40,7 @@ public class FeedPageActivity extends AppCompatActivity {
     private ImageButton logoutBT;
     private ImageButton addPostBT;
     private PostsViewModel postsViewModel;
+    private UsersViewModel usersViewModel;
     protected PostsListAdapter adapter;
     public LiveData<UserDetails> currentUser;
 
@@ -52,6 +49,7 @@ public class FeedPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feed_page);
         postsViewModel = new ViewModelProvider(this).get(PostsViewModel.class);
+        usersViewModel = new ViewModelProvider(this).get(UsersViewModel.class);
         UserDetails userDetails = new UserDetails();
         userDetails.setEmail(getIntent().getStringExtra("EMAIL"));
         MyJWTtoken.getInstance().setUserDetails(userDetails);
@@ -86,10 +84,8 @@ public class FeedPageActivity extends AppCompatActivity {
         });
         logoutBT = findViewById(R.id.logoutBT);
         logoutBT.setOnClickListener(v -> {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            UserListSrc.getInstance(this).setActiveUser(null);
-            Intent i = new Intent(this, LogInPageActivity.class);
-            startActivity(i);
+            MyJWTtoken.getInstance().forget();
+            logOut();
         });
         addPostBT = findViewById(R.id.addPostBT);
         addPostBT.setOnClickListener(v -> {
@@ -97,6 +93,13 @@ public class FeedPageActivity extends AppCompatActivity {
             startActivity(i);
         });
         postsViewModel.reload();
+    }
+
+    private void logOut() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        Intent i = new Intent(this, LogInPageActivity.class);
+        startActivity(i);
+        finish();
     }
 
     /**
@@ -138,6 +141,11 @@ public class FeedPageActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.editUserItem) {
                     Intent i = new Intent(v.getContext(), EditUserActivity.class);
                     startActivity(i);
+                    return true;
+                }
+                if (item.getItemId() == R.id.deleteUserItem) {
+                    usersViewModel.deleteUser();
+                    logOut();
                     return true;
                 }
                 if (item.getItemId() == R.id.homeItem) {

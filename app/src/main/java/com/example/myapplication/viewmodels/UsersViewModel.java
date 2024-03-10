@@ -29,4 +29,7 @@ public class UsersViewModel extends ViewModel {
     public void editUser(UserDetails userDetails) {
         usersRepository.editUser(userDetails);
     }
+    public void deleteUser() {
+        usersRepository.deleteUser();
+    }
 }
