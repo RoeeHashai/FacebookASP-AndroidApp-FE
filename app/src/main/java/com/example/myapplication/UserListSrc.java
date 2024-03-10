@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.example.myapplication.entities.User;
 
-import java.util.ArrayList;
 import java.util.List;
 /**
  * Singleton class responsible for managing the list of users in the application.
@@ -40,7 +39,7 @@ public class UserListSrc {
     private void initList(Context context){
         if (users != null)
             return;
-        users = JsonToList.createUserList(context, "users.json");
+        //users = JsonToList.createUserList(context, "users.json");
     }
 
     /**
@@ -51,7 +50,7 @@ public class UserListSrc {
      */
     public User getUser(String userName) {
         for (User user: users) {
-            if (user.getUserName().equals(userName)) {
+            if (user.getEmail().equals(userName)) {
                 return user;
             }
         }

@@ -9,6 +9,8 @@ import com.example.myapplication.entities.User;
  */
 @Entity
 public class Comment {
+    @PrimaryKey(autoGenerate = true)
+    private String id;
     private User author;
     private String content;
     /**

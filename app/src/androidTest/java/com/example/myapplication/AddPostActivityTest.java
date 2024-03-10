@@ -1,9 +1,5 @@
 package com.example.myapplication;
 
-import android.content.Intent;
-import android.net.Uri;
-
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
@@ -25,6 +21,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.example.myapplication.Activities.LogInPageActivity;
 import com.example.myapplication.entities.Post;
 
 import java.util.List;

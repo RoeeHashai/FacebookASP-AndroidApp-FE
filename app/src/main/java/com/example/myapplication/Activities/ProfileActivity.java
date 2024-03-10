@@ -1,12 +1,14 @@
-package com.example.myapplication;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.myapplication.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.myapplication.Activities.FeedPageActivity;
+import com.example.myapplication.PostListSrc;
+import com.example.myapplication.R;
+import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.User;
 
 public class ProfileActivity extends FeedPageActivity {
@@ -19,7 +21,7 @@ public class ProfileActivity extends FeedPageActivity {
         Intent intent = getIntent();
         String userName = intent.getStringExtra("USER");
         user = UserListSrc.getInstance(this).getUser(userName);
-        super.setHeaderDetails(user);
-        super.adapter.setPosts(PostListSrc.getInstance(this).getPostsOf(user));
+        //super.setHeaderDetails(user);
+        //super.adapter.setPosts(PostListSrc.getInstance(this).getPostsOf(user));
     }
 }
