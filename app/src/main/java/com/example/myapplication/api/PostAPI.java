@@ -4,18 +4,17 @@ import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.myapplication.Base64Utils;
 import com.example.myapplication.ErrorResponse;
 import com.example.myapplication.ErrorUtils;
 import com.example.myapplication.MyApplication;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
-import com.example.myapplication.UserDetails;
+import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.PostDao;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +46,26 @@ public class PostAPI {
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 new Thread(() -> {
                     //dao.clear();
-                    //dao.insertList(response.body());
+                    //dao.insertList(Base64Utils.compressAll(response.body()));
+                    //postListData.postValue(dao.index());
+                    postListData.postValue(response.body());
+                }).start();
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+            }
+        });
+    }
+
+    public void getUserPosts(String id) {
+        Call<List<Post>> call = webServiceAPI.getUserPosts(MyJWTtoken.getInstance().getToken().getValue(), id);
+        call.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                new Thread(() -> {
+                    //dao.clear();
+                    //dao.insertList(Base64Utils.compressAll(response.body()));
                     //postListData.postValue(dao.index());
                     postListData.postValue(response.body());
                 }).start();

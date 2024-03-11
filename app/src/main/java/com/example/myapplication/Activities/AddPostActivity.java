@@ -19,10 +19,8 @@ import com.example.myapplication.Base64Utils;
 import com.example.myapplication.BitmapUtils;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
-import com.example.myapplication.UserDetails;
-import com.example.myapplication.UserListSrc;
+import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.entities.Post;
-import com.example.myapplication.entities.User;
 import com.example.myapplication.viewmodels.PostsViewModel;
 
 import java.io.IOException;

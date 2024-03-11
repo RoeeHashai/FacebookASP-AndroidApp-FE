@@ -21,5 +21,9 @@
     <string name="BaseUrl">http://10.0.2.2:8080/api/</string>
     <string name="edit_user">edit user</string>
     <string name="delete_user">delete user</string>
+    <string name="my_friends">My friends</string>
+    <string name="cancel_request">cancel request</string>
+    <string name="reject">reject</string>
+    <string name="no">no</string>
     />
 </resources>

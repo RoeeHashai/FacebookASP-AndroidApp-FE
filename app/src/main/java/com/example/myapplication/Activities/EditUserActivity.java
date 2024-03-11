@@ -20,7 +20,7 @@ import com.example.myapplication.Base64Utils;
 import com.example.myapplication.BitmapUtils;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
-import com.example.myapplication.UserDetails;
+import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.viewmodels.UsersViewModel;
 
 import java.io.IOException;

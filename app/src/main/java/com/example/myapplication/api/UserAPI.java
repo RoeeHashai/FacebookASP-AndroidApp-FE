@@ -2,15 +2,21 @@ package com.example.myapplication.api;
 
 import android.widget.Toast;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.myapplication.ErrorResponse;
 import com.example.myapplication.ErrorUtils;
+import com.example.myapplication.Friends;
 import com.example.myapplication.JWT;
 import com.example.myapplication.LoginRequest;
 import com.example.myapplication.MyApplication;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
-import com.example.myapplication.UserDetails;
+import com.example.myapplication.entities.Friend;
+import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.entities.User;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -120,6 +126,40 @@ public class UserAPI {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+
+    public void getUserDetailById(String id, MutableLiveData<UserDetails> user) {
+        Call<UserDetails> call = webServiceAPI.getUserDetails(MyJWTtoken.getInstance().getToken().getValue(),
+                id);
+        call.enqueue(new Callback<UserDetails>() {
+            @Override
+            public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
+                new Thread(() -> {
+                    UserDetails userDetails = response.body();
+                    user.postValue(userDetails);
+                }).start();
+            }
+            @Override
+            public void onFailure(Call<UserDetails> call, Throwable t) {
+            }
+        });
+    }
+
+    public void getUserFriends(MutableLiveData<List<Friend>> friends) {
+        Call<Friends> call = webServiceAPI.getUserFriends(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id());
+        call.enqueue(new Callback<Friends>() {
+            @Override
+            public void onResponse(Call<Friends> call, Response<Friends> response) {
+                new Thread(() -> {
+                    Friends friendList = response.body();
+                    friends.postValue(friendList.getFriends());
+                }).start();
+            }
+            @Override
+            public void onFailure(Call<Friends> call, Throwable t) {
             }
         });
     }

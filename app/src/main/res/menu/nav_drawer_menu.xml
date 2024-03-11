@@ -9,6 +9,12 @@
         android:id="@+id/profileItem"
         android:icon="@drawable/account_circle_24px"
         android:title="@string/profile" />
+
+    <item
+        android:id="@+id/myFriendsItem"
+        android:icon="@drawable/group_24px"
+        android:title="@string/my_friends" />
+
     <item
         android:id="@+id/editUserItem"
         android:icon="@drawable/edit_24px"

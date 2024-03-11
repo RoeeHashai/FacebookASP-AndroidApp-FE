@@ -1,12 +1,8 @@
 package com.example.myapplication.viewmodels;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.myapplication.UserDetails;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.repositories.PostsRepository;
 
@@ -33,6 +29,9 @@ public class PostsViewModel extends ViewModel {
     public void reload() {
         repository.reload();
     }
+    public void reloadProfile(String id) {
+        repository.getUserPosts(id);
+    }
 
     public void createPost(Post post) {
         repository.createPost(post);
@@ -49,5 +48,8 @@ public class PostsViewModel extends ViewModel {
     }
     public void updatePost(String pid, Post post){
         repository.updatePost(pid, post);
+    }
+    public void getUserPosts(String id) {
+        repository.getUserPosts(id);
     }
 }

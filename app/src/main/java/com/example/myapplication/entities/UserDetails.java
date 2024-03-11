@@ -1,8 +1,10 @@
-package com.example.myapplication;
+package com.example.myapplication.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.TypeConverters;
+
+import com.example.myapplication.Base64Utils;
 
 @Entity
 public class UserDetails {
@@ -43,6 +45,11 @@ public class UserDetails {
     }
 
     public void setImage(String image) {
-        this.image = image;
+        if (image.isEmpty()) {
+            this.image = image;
+        }
+        else {
+            this.image = Base64Utils.compressBase64Image(image);
+        }
     }
 }
