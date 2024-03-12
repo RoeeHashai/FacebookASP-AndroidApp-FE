@@ -1,9 +1,7 @@
 package com.example.myapplication.api;
 
-import android.content.Intent;
 import android.widget.Toast;
 
-import com.example.myapplication.Activities.LogInPageActivity;
 import com.example.myapplication.ErrorResponse;
 import com.example.myapplication.ErrorUtils;
 import com.example.myapplication.JWT;
@@ -13,8 +11,6 @@ import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
 import com.example.myapplication.UserDetails;
 import com.example.myapplication.entities.User;
-
-import java.util.concurrent.CountDownLatch;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,6 +85,31 @@ public class UserAPI {
                     user.setEmail(MyJWTtoken.getInstance().getUserDetails().getValue().getEmail());
                     MyJWTtoken.getInstance().setUserDetails(user);
                     Toast.makeText(MyApplication.context, "edit successfully!", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    ErrorResponse errorResponse = ErrorUtils.parseError(response);
+                    String errorMessage = errorResponse.getMessage();
+                    Toast.makeText(MyApplication.context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+
+    public void deleteUser() {
+        String jwt = MyJWTtoken.getInstance().getToken().getValue();
+        UserDetails current = MyJWTtoken.getInstance().getUserDetails().getValue();
+        String id = current.get_id();
+        Call<Void> call = webServiceAPI.deleteUser(jwt, id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    MyJWTtoken.getInstance().forget();
+                    Toast.makeText(MyApplication.context, "delete successfully!", Toast.LENGTH_SHORT).show();
 
                 } else {
                     ErrorResponse errorResponse = ErrorUtils.parseError(response);

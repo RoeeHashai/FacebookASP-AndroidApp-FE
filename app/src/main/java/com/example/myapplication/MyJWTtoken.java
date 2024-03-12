@@ -26,7 +26,7 @@ public class MyJWTtoken {
         return token.getValue() != null;
     }
 
-    public void forgetToken() {
+    public void forget() {
         this.token = null;
         this.userDetails = null;
     }
