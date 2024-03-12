@@ -1,19 +1,14 @@
 package com.example.myapplication.repositories;
 
-import android.content.Context;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.LoginRequest;
-import com.example.myapplication.R;
-import com.example.myapplication.UserDetails;
+import com.example.myapplication.entities.Friend;
+import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.api.UserAPI;
-import com.example.myapplication.api.WebServiceAPI;
 import com.example.myapplication.entities.User;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.List;
 
 public class UsersRepository {
     private UserAPI api;
@@ -32,6 +27,12 @@ public class UsersRepository {
     }
     public void deleteUser() {
         api.deleteUser();
+    }
+    public void getUserDetails(String id, MutableLiveData<UserDetails> user) {
+        api.getUserDetailById(id, user);
+    }
+    public void getUserFriends(MutableLiveData<List<Friend>> friends) {
+        api.getUserFriends(friends);
     }
 }
 

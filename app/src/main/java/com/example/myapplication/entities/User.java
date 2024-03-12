@@ -2,6 +2,8 @@ package com.example.myapplication.entities;
 
 import androidx.room.Entity;
 
+import com.example.myapplication.Base64Utils;
+
 import java.util.List;
 
 /**
@@ -64,6 +66,11 @@ public class User {
      * @param image Resource ID of the profile picture.
      */
     public void setImage(String image) {
-        this.image = image;
+        if (image.isEmpty()) {
+            this.image = image;
+        }
+        else {
+            this.image = Base64Utils.compressBase64Image(image);
+        }
     }
 }

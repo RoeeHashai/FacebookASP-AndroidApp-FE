@@ -1,9 +1,10 @@
 package com.example.myapplication.api;
 
+import com.example.myapplication.Friends;
 import com.example.myapplication.entities.Friend;
 import com.example.myapplication.JWT;
 import com.example.myapplication.LoginRequest;
-import com.example.myapplication.UserDetails;
+import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.User;
 
@@ -67,7 +68,7 @@ public interface WebServiceAPI {
 
     // Get user's friends
     @GET("users/{id}/friends")
-    Call<List<Friend>> getUserFriends(@Header("Authorization") String authToken, @Path("id") String userId);
+    Call<Friends> getUserFriends(@Header("Authorization") String authToken, @Path("id") String userId);
 
     // Add a friend
     @POST("users/{id}/friends")

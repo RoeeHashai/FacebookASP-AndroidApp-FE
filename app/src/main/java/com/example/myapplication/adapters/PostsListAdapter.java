@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -25,6 +27,7 @@ import com.example.myapplication.Activities.CommentsPageActivity;
 import com.example.myapplication.Activities.ProfileActivity;
 import com.example.myapplication.Base64Utils;
 import com.example.myapplication.DateConverter;
+import com.example.myapplication.MyApplication;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
@@ -44,8 +47,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public void setEditedImage(Uri uri) {
-        editedImage = uri;
-        ivForEdit.setImageURI(uri);
+        editedImage.setValue(uri);
     }
 
     /**
@@ -88,13 +90,14 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
     private final LayoutInflater mInfalter;
     private List<Post> posts;
-    private Uri editedImage;
-    private ImageView ivForEdit;
+    private MutableLiveData<Uri> editedImage;
+    private LifecycleOwner owner;
 
-    public PostsListAdapter(Context context, PostsViewModel postsViewModel) {
+    public PostsListAdapter(Context context, PostsViewModel postsViewModel, LifecycleOwner owner) {
 
         this.mInfalter = LayoutInflater.from(context);
         this.postsViewModel = postsViewModel;
+        this.owner = owner;
     }
 
     @Override
@@ -111,12 +114,18 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             final Post current = posts.get(position);
             // Set author name
             holder.tvAuthor.setText(current.getAuthor().getName());
+            holder.tvAuthor.setOnClickListener(v -> {
+                openHisProfile(current.getAuthor().get_id(), v.getContext());
+            });
             // Set profile picture
             try {
                 holder.ivProfile.setImageURI(Base64Utils.base64ToUri(current.getAuthor().getImage()));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            holder.ivProfile.setOnClickListener(v -> {
+                openHisProfile(current.getAuthor().get_id(), v.getContext());
+            });
             // Set post content
             holder.tvContent.setText(current.getContent());
             // Set post date
@@ -140,9 +149,9 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 holder.makePostChangeBT.setVisibility(View.GONE);
                 holder.editImage.setVisibility(View.GONE);
                 holder.deleteImage.setVisibility(View.GONE);
-                if(this.editedImage != null) {
+                if(this.editedImage != null && this.editedImage.getValue() != null) {
                     try {
-                        current.setImage(Base64Utils.uriToBase64(editedImage));
+                        current.setImage(Base64Utils.uriToBase64(editedImage.getValue()));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -152,8 +161,16 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             });
             // Handle editing post image functionality
             holder.editImage.setOnClickListener(v -> {
-                ivForEdit = holder.ivPic;
+                editedImage = new MutableLiveData<>();
                 selectPhoto(holder.editImage.getContext());
+                editedImage.observe(owner, uri -> {
+                    holder.ivPic.setImageURI(uri);
+                    try {
+                        current.setImage(Base64Utils.uriToBase64(uri));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             });
             // Handle deleting post image functionality
             holder.deleteImage.setOnClickListener(v -> {
@@ -287,9 +304,9 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         ((Activity) context).startActivityForResult(chooserIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-    private void openHisProfile(User user, View v, Context context) {
+    private void openHisProfile(String id, Context context) {
         Intent intent = new Intent(context, ProfileActivity.class);
-        intent.putExtra("USER", user.getEmail());
+        intent.putExtra("ID", id);
         context.startActivity(intent);
     }
 }

@@ -1,13 +1,11 @@
 package com.example.myapplication.viewmodels;
 
-import android.content.Context;
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.LoginRequest;
-import com.example.myapplication.UserDetails;
+import com.example.myapplication.entities.Friend;
+import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.entities.User;
 import com.example.myapplication.repositories.UsersRepository;
 
@@ -31,5 +29,11 @@ public class UsersViewModel extends ViewModel {
     }
     public void deleteUser() {
         usersRepository.deleteUser();
+    }
+    public void getUserDetailsById(String id, MutableLiveData<UserDetails> user) {
+        usersRepository.getUserDetails(id, user);
+    }
+    public void getUserFriends(MutableLiveData<List<Friend>> friends) {
+        usersRepository.getUserFriends(friends);
     }
 }

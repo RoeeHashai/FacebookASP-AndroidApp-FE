@@ -2,12 +2,15 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -39,6 +42,19 @@ public class BitmapUtils {
 
         // Get the Uri of the saved file
         return Uri.fromFile(imageFile);
+    }
+
+    public static Bitmap uriToBitmap(Context context, Uri uri) {
+        Bitmap bitmap = null;
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            bitmap = BitmapFactory.decodeStream(inputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }
 

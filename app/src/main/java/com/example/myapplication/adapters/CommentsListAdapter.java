@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Comment;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
         private CommentViewHolder(View itemView) {
             super(itemView);
-            tvAuthor = itemView.findViewById(R.id.tvComAuthor);
+            tvAuthor = itemView.findViewById(R.id.tvFriendName);
             ivProfile = itemView.findViewById(R.id.ivComProfile);
             tvContent = itemView.findViewById(R.id.tvComContent);
             etContent = itemView.findViewById(R.id.etComContent);

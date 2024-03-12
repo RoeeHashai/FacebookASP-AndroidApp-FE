@@ -3,6 +3,8 @@ package com.example.myapplication;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.myapplication.entities.UserDetails;
+
 public class MyJWTtoken {
     private static MyJWTtoken instanse;
     private MutableLiveData<String> token;
@@ -23,7 +25,7 @@ public class MyJWTtoken {
     }
 
     public boolean isExist() {
-        return token.getValue() != null;
+        return token != null && userDetails != null && userDetails.getValue() != null;
     }
 
     public void forget() {

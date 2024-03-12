@@ -24,7 +24,7 @@ import com.example.myapplication.Base64Utils;
 import com.example.myapplication.BitmapUtils;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
-import com.example.myapplication.UserDetails;
+import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.adapters.PostsListAdapter;
 import com.example.myapplication.viewmodels.PostsViewModel;
 import com.example.myapplication.viewmodels.UsersViewModel;
@@ -39,8 +39,8 @@ public class FeedPageActivity extends AppCompatActivity {
     private ImageButton showMenuBt;
     private ImageButton logoutBT;
     private ImageButton addPostBT;
-    private PostsViewModel postsViewModel;
-    private UsersViewModel usersViewModel;
+    protected PostsViewModel postsViewModel;
+    protected UsersViewModel usersViewModel;
     protected PostsListAdapter adapter;
     public LiveData<UserDetails> currentUser;
 
@@ -50,22 +50,29 @@ public class FeedPageActivity extends AppCompatActivity {
         setContentView(R.layout.feed_page);
         postsViewModel = new ViewModelProvider(this).get(PostsViewModel.class);
         usersViewModel = new ViewModelProvider(this).get(UsersViewModel.class);
-        UserDetails userDetails = new UserDetails();
-        userDetails.setEmail(getIntent().getStringExtra("EMAIL"));
-        MyJWTtoken.getInstance().setUserDetails(userDetails);
-        currentUser = MyJWTtoken.getInstance().getUserDetails();
-        postsViewModel.getUserDetails();
-        MyJWTtoken.getInstance().getUserDetails().observe(this, new Observer<UserDetails>() {
-            @Override
-            public void onChanged(UserDetails userDetails) {
-                if (userDetails.get_id() != null) {
-                    setHeaderDetails(userDetails);
+        if(MyJWTtoken.getInstance().isExist()) {
+            setHeaderDetails(MyJWTtoken.getInstance().getUserDetails().getValue());
+            postsViewModel.reload();
+        }
+        else {
+            UserDetails userDetails = new UserDetails();
+            userDetails.setEmail(getIntent().getStringExtra("EMAIL"));
+            MyJWTtoken.getInstance().setUserDetails(userDetails);
+            currentUser = MyJWTtoken.getInstance().getUserDetails();
+            postsViewModel.getUserDetails();
+            MyJWTtoken.getInstance().getUserDetails().observe(this, new Observer<UserDetails>() {
+                @Override
+                public void onChanged(UserDetails userDetails) {
+                    if (userDetails.get_id() != null) {
+                        setHeaderDetails(userDetails);
+                        postsViewModel.reload();
+                    }
                 }
-            }
-        });
+            });
+        }
         // Initialize RecyclerView for displaying posts
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
-        adapter = new PostsListAdapter(this, postsViewModel);
+        adapter = new PostsListAdapter(this, postsViewModel, this);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
@@ -92,7 +99,6 @@ public class FeedPageActivity extends AppCompatActivity {
             Intent i = new Intent(this, AddPostActivity.class);
             startActivity(i);
         });
-        postsViewModel.reload();
     }
 
     private void logOut() {
@@ -187,11 +193,5 @@ public class FeedPageActivity extends AppCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        postsViewModel.reload();
     }
 }

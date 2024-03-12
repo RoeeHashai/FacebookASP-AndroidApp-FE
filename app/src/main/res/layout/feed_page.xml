@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".Activities.FeedPageActivity">
 
-    <include layout="@layout/nav_header"
+    <include
         android:id="@+id/header_title"
-        />
+        layout="@layout/nav_header" />
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -23,7 +23,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/darker_gray" />
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <Button
+        android:id="@+id/sendFriendReqBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Send friend request"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_title"
+        tools:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvReqSent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Request sent! waiting for his answer"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_title"
+        tools:textSize="24sp" />
 
     <LinearLayout
         android:id="@+id/bottomFeedLayout"

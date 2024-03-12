@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
 import com.example.myapplication.MyApplication;
-import com.example.myapplication.UserDetails;
 import com.example.myapplication.api.PostAPI;
 import com.example.myapplication.entities.AppDB;
 import com.example.myapplication.entities.Post;
@@ -60,6 +59,9 @@ public class PostsRepository {
         api.createPost(post);
     }
 
+    public void getUserPosts(String id) {
+        api.getUserPosts(id);
+    }
     public void likePost(String pid) {
         api.likePost(pid);
     }
