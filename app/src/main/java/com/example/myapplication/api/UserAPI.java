@@ -163,4 +163,67 @@ public class UserAPI {
             }
         });
     }
+
+    public void sendRequest(String id) {
+        Call<Void> call = webServiceAPI.addFriend(MyJWTtoken.getInstance().getToken().getValue(),
+                id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(MyApplication.context, "request sent!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ErrorResponse errorResponse = ErrorUtils.parseError(response);
+                    String errorMessage = errorResponse.getMessage();
+                    Toast.makeText(MyApplication.context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+
+    public void deleteFriend(String id) {
+        Call<Void> call = webServiceAPI.deleteFriend(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(MyApplication.context, "deleted", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ErrorResponse errorResponse = ErrorUtils.parseError(response);
+                    String errorMessage = errorResponse.getMessage();
+                    Toast.makeText(MyApplication.context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+
+    public void acceptFriend(String id) {
+        Call<Void> call = webServiceAPI.handleFriendRequest(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(MyApplication.context, "now you are friends", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ErrorResponse errorResponse = ErrorUtils.parseError(response);
+                    String errorMessage = errorResponse.getMessage();
+                    Toast.makeText(MyApplication.context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
 }

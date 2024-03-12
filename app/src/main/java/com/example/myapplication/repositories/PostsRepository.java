@@ -7,6 +7,7 @@ import androidx.room.Room;
 import com.example.myapplication.MyApplication;
 import com.example.myapplication.api.PostAPI;
 import com.example.myapplication.entities.AppDB;
+import com.example.myapplication.entities.Comment;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.PostDao;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class PostsRepository {
     private PostDao dao;
     private PostListData postListData;
+    private CommentListData commentListData;
     private PostAPI api;
 
     public PostsRepository() {
@@ -24,7 +26,8 @@ public class PostsRepository {
                 .allowMainThreadQueries().build();
         dao = db.postDao();
         postListData = new PostListData();
-        api = new PostAPI(postListData, dao);
+        commentListData = new CommentListData();
+        api = new PostAPI(postListData, commentListData, dao);
     }
 
     class PostListData extends MutableLiveData<List<Post>> {
@@ -43,6 +46,21 @@ public class PostsRepository {
         }
     }
 
+    class CommentListData extends MutableLiveData<List<Comment>> {
+        public CommentListData() {
+            super();
+            setValue(new ArrayList<>());
+        }
+
+        @Override
+        protected void onActive() {
+            super.onActive();
+            new Thread(() -> {
+                commentListData.postValue(commentListData.getValue());
+            }).start();
+        }
+    }
+
     public void getUserDetails() {
         api.getUserDetailByEmail();
     }
@@ -50,13 +68,22 @@ public class PostsRepository {
     public LiveData<List<Post>> getAll() {
         return postListData;
     }
+    public LiveData<List<Comment>> getAllComments() {
+        return commentListData;
+    }
 
     public void reload() {
         api.get();
     }
+    public void reloadComments(String pid) {
+        api.getPostComments(pid);
+    }
 
     public void createPost(Post post) {
         api.createPost(post);
+    }
+    public void createComment(String pid, Comment comment) {
+        api.createComment(pid, comment);
     }
 
     public void getUserPosts(String id) {

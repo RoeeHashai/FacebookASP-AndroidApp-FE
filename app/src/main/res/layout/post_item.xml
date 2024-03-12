@@ -16,10 +16,11 @@
         android:padding="10dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:scaleType="centerCrop"
             android:cropToPadding="false"
             android:src="@drawable/account_circle_24px" />
 

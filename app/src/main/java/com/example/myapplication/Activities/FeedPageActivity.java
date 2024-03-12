@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -139,8 +140,13 @@ public class FeedPageActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.profileItem) {
                     Intent i = new Intent(v.getContext(), ProfileActivity.class);
-                    String user = currentUser.getValue().getEmail();
-                    i.putExtra("USER", user);
+                    String id = MyJWTtoken.getInstance().getUserDetails().getValue().get_id();
+                    i.putExtra("ID", id);
+                    startActivity(i);
+                    return true;
+                }
+                if (item.getItemId() == R.id.myFriendsItem) {
+                    Intent i = new Intent(v.getContext(), FriendsActivity.class);
                     startActivity(i);
                     return true;
                 }

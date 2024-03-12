@@ -9,7 +9,6 @@ import com.example.myapplication.entities.User;
  */
 @Entity
 public class Comment {
-    @PrimaryKey(autoGenerate = true)
     private String id;
     private User author;
     private String content;
@@ -22,6 +21,19 @@ public class Comment {
         this.author = author;
         this.content = content;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Comment() {
+
+    }
+
     /**
      * Getter method to retrieve the author of the comment.
      * @return The author of the comment.

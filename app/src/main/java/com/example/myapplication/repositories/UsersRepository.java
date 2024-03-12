@@ -34,5 +34,14 @@ public class UsersRepository {
     public void getUserFriends(MutableLiveData<List<Friend>> friends) {
         api.getUserFriends(friends);
     }
+    public void sendRequest(String id) {
+        api.sendRequest(id);
+    }
+    public void deleteRequest(String id) {
+        api.deleteFriend(id);
+    }
+    public void acceptRequest(String id) {
+        api.acceptFriend(id);
+    }
 }
 

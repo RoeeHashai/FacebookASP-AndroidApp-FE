@@ -1,8 +1,10 @@
 package com.example.myapplication.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.widget.EditText;
@@ -12,9 +14,11 @@ import com.example.myapplication.PostListSrc;
 import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
 import com.example.myapplication.adapters.CommentsListAdapter;
+import com.example.myapplication.adapters.PostsListAdapter;
 import com.example.myapplication.entities.Comment;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.User;
+import com.example.myapplication.viewmodels.PostsViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,43 +28,43 @@ import java.util.List;
  */
 public class CommentsPageActivity extends AppCompatActivity {
 
-    private Post currentPost;
+    private String currentPost;
+    private PostsViewModel postsViewModel;
+    protected CommentsListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comments_page_activity);
+        postsViewModel = new ViewModelProvider(this).get(PostsViewModel.class);
         // Get the position of the current post from the intent
-        int position = getIntent().getIntExtra("CURRENT_POST", -1);
-        currentPost = PostListSrc.getInstance(this).getPosts().get(position);
+        currentPost = getIntent().getStringExtra("POST");
         // Initialize RecyclerView for displaying comments
         RecyclerView lstComments = findViewById(R.id.lstComments);
-        final CommentsListAdapter adapter = new CommentsListAdapter(this);
+        adapter = new CommentsListAdapter(this);
         lstComments.setAdapter(adapter);
         lstComments.setLayoutManager(new LinearLayoutManager(this));
-        // Load and display all comments for the current post
-        setAllComment(adapter);
-        // Set click listener for the button to add a new comment
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.commentsRefreshLayout);
+        refreshLayout.setOnRefreshListener(() -> {
+            postsViewModel.reloadComments(currentPost);
+        });
+        postsViewModel.getComments().observe(this, comments -> {
+            adapter.setComment(comments);
+            refreshLayout.setRefreshing(false);
+        });
+
         ImageButton addCommentBT = findViewById(R.id.addCommentBT);
         addCommentBT.setOnClickListener(v -> {
             EditText contentView = findViewById(R.id.commentContentBox);
             String content = contentView.getText().toString();
+            Comment comment = new Comment();
+            comment.setContent(content);
+            comment.setId(currentPost);
             if (content.length() != 0) {
-                //currentPost.addComment(UserListSrc.getInstance(this).getActiveUser(), content);
+                postsViewModel.createComment(currentPost, comment);
             }
             // Clear the content of the comment box after adding the comment
             contentView.setText("");
-            // Update the displayed comments
-            setAllComment(adapter);
         });
-    }
-
-    /**
-     * Sets all comments for the current post in the adapter.
-     * @param adapter The adapter for displaying comments.
-     */
-    private void setAllComment(CommentsListAdapter adapter) {
-        //List<Comment> comments = currentPost.getComments();
-        //adapter.setComment(comments);
     }
 }

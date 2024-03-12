@@ -25,14 +25,5 @@ public interface PostDao {
 
     @Insert
     void insert(Post... posts);
-
-    @Update
-    void update(Post... posts);
-
-    @Delete
-    void delete(Post... posts);
-
-    @Query("SELECT COUNT(*) FROM post")
-    int getPostCount();
 }
 
