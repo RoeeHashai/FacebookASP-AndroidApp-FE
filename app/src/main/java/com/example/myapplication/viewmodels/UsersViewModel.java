@@ -13,11 +13,19 @@ import java.util.List;
 
 public class UsersViewModel extends ViewModel {
     private UsersRepository usersRepository;
+    private MutableLiveData<List<Friend>> friends;
 
     public UsersViewModel() {
         usersRepository = new UsersRepository();
+        this.friends = new MutableLiveData<>();
     }
 
+    public MutableLiveData<List<Friend>> getFriends() {
+        return friends;
+    }
+    public void reloadFriends() {
+        usersRepository.getUserFriends(friends);
+    }
     public void createUser(User user) {
         usersRepository.createUser(user);
     }
@@ -33,7 +41,13 @@ public class UsersViewModel extends ViewModel {
     public void getUserDetailsById(String id, MutableLiveData<UserDetails> user) {
         usersRepository.getUserDetails(id, user);
     }
-    public void getUserFriends(MutableLiveData<List<Friend>> friends) {
-        usersRepository.getUserFriends(friends);
+    public void sendRequest(String id) {
+        usersRepository.sendRequest(id);
+    }
+    public void deleteRequest(String id) {
+        usersRepository.deleteRequest(id);
+    }
+    public void acceptRequest(String id) {
+        usersRepository.acceptRequest(id);
     }
 }

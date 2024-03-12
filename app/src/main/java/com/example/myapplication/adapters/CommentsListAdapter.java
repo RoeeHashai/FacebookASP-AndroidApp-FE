@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Comment;
 
 import java.util.List;
@@ -58,38 +59,9 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
-        /*if (comments != null) {
-            // Get the current comment
-            final Comment current = comments.get(position);
-            // Set author name
-            holder.tvAuthor.setText(current.getAuthor().getName());
-            // Set profile picture
-            if (current.getAuthor().getUriProfilePic() != null) {
-                holder.ivProfile.setImageURI(current.getAuthor().getUriProfilePic());
-            } else {
-                holder.ivProfile.setImageResource(current.getAuthor().getIntProfilePic());
-            }
-            // Set comment content
-            holder.tvContent.setText(current.getContent());
-            // Handle edit comment functionality
-            holder.makeCommentChangeBT.setOnClickListener(v -> {
-                holder.tvContent.setVisibility(View.VISIBLE);
-                holder.tvContent.setText(holder.etContent.getText());
-                holder.etContent.setVisibility(View.GONE);
-                holder.makeCommentChangeBT.setVisibility(View.GONE);
-                comments.get(position).setContent(holder.etContent.getText().toString());
-            });
-            // Show edit/delete menu only for the author of the comment
-            String postUser = comments.get(position).getAuthor().getEmail();
-            String currentUser = UserListSrc.getInstance(holder.etContent.getContext()).getActiveUser().getEmail();
-            if (postUser.equals(currentUser)) {
-                holder.ivMenu.setOnClickListener(v -> {
-                    showMenu(v, position, holder);
-                });
-            } else {
-                holder.ivMenu.setVisibility(View.GONE);
-            }
-        }*/
+        if (comments != null) {
+
+        }
     }
 
     // Show popup menu for edit/delete options

@@ -18,8 +18,10 @@ import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Comment;
 import com.example.myapplication.entities.Friend;
+import com.example.myapplication.viewmodels.UsersViewModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.FriendViewHolder> {
@@ -42,9 +44,11 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
 
     private final LayoutInflater mInfalter;
     private List<Friend> friends;
+    private UsersViewModel usersViewModel;
 
-    public FriendsListAdapter(Context context) {
+    public FriendsListAdapter(Context context, UsersViewModel usersViewModel) {
         this.mInfalter = LayoutInflater.from(context);
+        this.usersViewModel = usersViewModel;
     }
 
     @Override
@@ -75,8 +79,11 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
             case "approved":
                 holder.accept.setVisibility(View.GONE);
                 holder.delete.setVisibility(View.VISIBLE);
+                holder.delete.setText("delete");
                 holder.delete.setOnClickListener(v -> {
-                    deleteFriend();
+                    deleteFriend(current.get_id());
+                    friends.remove(current);
+                    notifyDataSetChanged();
                 });
                 break;
             case "pending":
@@ -84,10 +91,14 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.delete.setText(R.string.reject);
                 holder.delete.setOnClickListener(v -> {
-                    deleteFriend();
+                    deleteFriend(current.get_id());
+                    friends.remove(current);
+                    notifyDataSetChanged();
                 });
-                holder.delete.setOnClickListener(v -> {
-                    // missing
+                holder.accept.setOnClickListener(v -> {
+                    acceptFriend(current.get_id());
+                    current.setStatus("approved");
+                    notifyDataSetChanged();
                 });
                 break;
             case "s-pending":
@@ -95,7 +106,9 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.delete.setText(R.string.cancel_request);
                 holder.delete.setOnClickListener(v -> {
-                    deleteFriend();
+                    deleteFriend(current.get_id());
+                    friends.remove(current);
+                    notifyDataSetChanged();
                 });
                 break;
             default:
@@ -103,12 +116,16 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         }
     }
 
-    private void deleteFriend() {
+    private void deleteFriend(String id) {
+        usersViewModel.deleteRequest(id);
+    }
 
+    private void acceptFriend(String id) {
+        usersViewModel.acceptRequest(id);
     }
     // Set friends data
     public void setFriends(List<Friend> s) {
-        friends = s;
+        friends = sortList(s);
         notifyDataSetChanged();
     }
 
@@ -118,5 +135,27 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         if (friends != null)
             return friends.size();
         else return 0;
+    }
+
+    private List<Friend> sortList(List<Friend> s) {
+        List<Friend> friendList = new ArrayList<>();
+        for (Friend f : s) {
+            switch (f.getStatus()) {
+                case "approved":
+                    friendList.add(f);
+                    break;
+                case "pending":
+                    friendList.add(0, f);
+                    break;
+                default:
+                    break;
+            }
+        }
+        for (Friend f : s) {
+            if (f.getStatus().equals("s-pending")) {
+                friendList.add(f);
+            }
+        }
+        return friendList;
     }
 }

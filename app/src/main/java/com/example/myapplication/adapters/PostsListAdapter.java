@@ -178,12 +178,6 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 editedImage = null;
                 current.setImage("");
             });
-            // Handle opening comments page
-            holder.commentBT.setOnClickListener(v -> {
-                Intent intent = new Intent(holder.commentBT.getContext(), CommentsPageActivity.class);
-                intent.putExtra("CURRENT_POST", current.get_id());
-                holder.commentBT.getContext().startActivity(intent);
-            });
             // Show post menu for the author of the post
             String postUser = current.getAuthor().get_id();
             String currentUser = MyJWTtoken.getInstance().getUserDetails().getValue().get_id();
@@ -216,7 +210,6 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                     current.getLikes().add(currentUser);
                 }
                 notifyDataSetChanged();
-                postsViewModel.reload();
             });
             // Display like counter
             String likes = "";

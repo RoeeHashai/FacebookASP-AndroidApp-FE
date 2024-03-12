@@ -10,6 +10,7 @@ import com.example.myapplication.ErrorUtils;
 import com.example.myapplication.MyApplication;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
+import com.example.myapplication.entities.Comment;
 import com.example.myapplication.entities.UserDetails;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.PostDao;
@@ -24,12 +25,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostAPI {
     private MutableLiveData<List<Post>> postListData;
+    private MutableLiveData<List<Comment>> commentListData;
     private PostDao dao;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
 
-    public PostAPI(MutableLiveData<List<Post>> postListData, PostDao dao) {
+    public PostAPI(MutableLiveData<List<Post>> postListData,
+                   MutableLiveData<List<Comment>> commentListData, PostDao dao) {
         this.postListData = postListData;
+        this.commentListData = commentListData;
         this.dao = dao;
 
         retrofit = new Retrofit.Builder()
@@ -58,6 +62,23 @@ public class PostAPI {
         });
     }
 
+    public void getPostComments(String pid) {
+        Call<List<Comment>> call = webServiceAPI.getPostComments(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), pid);
+        call.enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                new Thread(() -> {
+                    commentListData.postValue(response.body());
+                }).start();
+            }
+
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+            }
+        });
+    }
+
     public void getUserPosts(String id) {
         Call<List<Post>> call = webServiceAPI.getUserPosts(MyJWTtoken.getInstance().getToken().getValue(), id);
         call.enqueue(new Callback<List<Post>>() {
@@ -65,7 +86,7 @@ public class PostAPI {
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 new Thread(() -> {
                     //dao.clear();
-                    //dao.insertList(Base64Utils.compressAll(response.body()));
+                    //dao.insertList(response.body());
                     //postListData.postValue(dao.index());
                     postListData.postValue(response.body());
                 }).start();
@@ -103,6 +124,28 @@ public class PostAPI {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(MyApplication.context, "Published successfully!", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    ErrorResponse errorResponse = ErrorUtils.parseError(response);
+                    String errorMessage = errorResponse.getMessage();
+                    Toast.makeText(MyApplication.context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+
+    public void createComment(String pid, Comment comment) {
+        Call<Void> call = webServiceAPI.createComment(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), pid, comment);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(MyApplication.context, "added successfully!", Toast.LENGTH_SHORT).show();
 
                 } else {
                     ErrorResponse errorResponse = ErrorUtils.parseError(response);

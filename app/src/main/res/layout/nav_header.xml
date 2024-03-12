@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="70dp"
     android:background="?attr/colorPrimary">
 
     <LinearLayout
@@ -11,17 +11,19 @@
         android:layout_height="match_parent">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileHeader"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
             android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"/>
+            android:paddingVertical="5dp" />
 
         <TextView
             android:id="@+id/NameHeaderText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
             android:textColor="@color/white"
             android:textSize="14pt"
             tools:text="my name" />

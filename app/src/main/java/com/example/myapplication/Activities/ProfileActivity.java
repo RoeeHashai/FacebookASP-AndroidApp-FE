@@ -36,7 +36,6 @@ public class ProfileActivity extends AppCompatActivity {
     private UsersViewModel usersViewModel;
     private PostsViewModel postsViewModel;
     protected PostsListAdapter adapter;
-    private MutableLiveData<List<Friend>> friends;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +52,12 @@ public class ProfileActivity extends AppCompatActivity {
             if (userDetails != null) {
                 setHeaderDetails(userDetails);
                 postsViewModel.reloadProfile(userId);
+                usersViewModel.getFriends().observe(this, friendList -> {
+                    setPage(friendList);
+                });
             }
         });
-        friends = new MutableLiveData<>();
-        usersViewModel.getUserFriends(friends);
-        friends.observe(this, friendList -> {
-            setPage(friendList);
-        });
+        usersViewModel.reloadFriends();
         // Set click listeners for menu, logout, and add post buttons
         ImageButton showMenuBt = findViewById(R.id.menuBT);
         showMenuBt.setOnClickListener(v -> {
@@ -73,7 +71,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setPage(List<Friend> friendList) {
-        String status = isHeIsMyFriend(friendList);
+        String status;
+        if (user.getValue().get_id().equals(MyJWTtoken.getInstance().getUserDetails().getValue().get_id()))
+            status = "approved";
+        else
+            status = isHeIsMyFriend(friendList);
         switch (status) {
             case "approved":
                 initAdapter();
@@ -85,8 +87,18 @@ public class ProfileActivity extends AppCompatActivity {
                 notFriend();
                 break;
             case "pending":
+                pend();
                 break;
+            default: break;
         }
+    }
+
+    private void pend() {
+        Button sendReqBT = findViewById(R.id.sendFriendReqBT);
+        TextView tvReqSent = findViewById(R.id.tvReqSent);
+        sendReqBT.setVisibility(View.GONE);
+        tvReqSent.setVisibility(View.VISIBLE);
+        tvReqSent.setText("This user is waiting your approval!");
     }
 
     private void notFriend() {
@@ -95,6 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
         sendReqBT.setVisibility(View.VISIBLE);
         tvReqSent.setVisibility(View.GONE);
         sendReqBT.setOnClickListener(v -> {
+            usersViewModel.sendRequest(user.getValue().get_id());
             sPend();
         });
     }
@@ -103,6 +116,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView tvReqSent = findViewById(R.id.tvReqSent);
         sendReqBT.setVisibility(View.GONE);
         tvReqSent.setVisibility(View.VISIBLE);
+        tvReqSent.setText("Request sent! waiting for an answer");
     }
     private void initAdapter() {
         // Initialize RecyclerView for displaying posts
@@ -161,6 +175,11 @@ public class ProfileActivity extends AppCompatActivity {
                     Intent i = new Intent(v.getContext(), ProfileActivity.class);
                     String id = MyJWTtoken.getInstance().getUserDetails().getValue().get_id();
                     i.putExtra("ID", id);
+                    startActivity(i);
+                    return true;
+                }
+                if (item.getItemId() == R.id.myFriendsItem) {
+                    Intent i = new Intent(v.getContext(), FriendsActivity.class);
                     startActivity(i);
                     return true;
                 }
