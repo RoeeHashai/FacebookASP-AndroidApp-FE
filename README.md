@@ -24,15 +24,15 @@ This Android application serves as a client for a social media platform. It allo
 2. Click on the "Run" button to build and install the app on the device.
 3. Once installed, open the app on the device and follow the on-screen instructions to register or log in.
 
-## Screenshots (Optional)
+## Screenshots
 <!-- Add screenshots of your app to illustrate its functionality -->
-![Screenshot_20240312_235046](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/afd61af6-af3c-4221-b05d-0142c8327502)
-![Screenshot_20240312_235126](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/4e53f6b7-fefe-4f43-a800-33d879bef428)
-![Screenshot_20240312_234755](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/2086aadb-d286-4ef2-8fe1-98fb6457cd85)
-![Screenshot_20240312_235257](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/c94b130f-9da1-4c07-b0d4-0d07202818cc)
-![Screenshot_20240312_234925](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/b895f974-98d9-4cd3-ab2c-e712449d0208)
-![Screenshot_20240312_234836](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/47ae69dc-853e-42bb-825d-ada098d46691)
-![Screenshot_20240312_235029](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/2a542d5b-505d-414a-b5a9-a115f1fe7a7d)
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/afd61af6-af3c-4221-b05d-0142c8327502" alt="Screenshot 1" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/4e53f6b7-fefe-4f43-a800-33d879bef428" alt="Screenshot 2" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/2086aadb-d286-4ef2-8fe1-98fb6457cd85" alt="Screenshot 3" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/c94b130f-9da1-4c07-b0d4-0d07202818cc" alt="Screenshot 4" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/b895f974-98d9-4cd3-ab2c-e712449d0208" alt="Screenshot 5" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/47ae69dc-853e-42bb-825d-ada098d46691" alt="Screenshot 6" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/2a542d5b-505d-414a-b5a9-a115f1fe7a7d" alt="Screenshot 7" width="300">
 
 
 ## Limitations
