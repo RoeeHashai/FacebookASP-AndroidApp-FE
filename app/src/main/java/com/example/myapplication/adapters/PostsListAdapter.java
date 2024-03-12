@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Activities.CommentsPageActivity;
@@ -26,6 +30,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.User;
+import com.example.myapplication.viewmodels.PostsViewModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,11 +40,12 @@ import java.util.List;
  */
 public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.PostViewHolder> {
 
-
+    private PostsViewModel postsViewModel;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    public int getPosOfEditedImage() {
-        return posOfEditedImage;
+    public void setEditedImage(Uri uri) {
+        editedImage = uri;
+        ivForEdit.setImageURI(uri);
     }
 
     /**
@@ -82,10 +88,13 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
     private final LayoutInflater mInfalter;
     private List<Post> posts;
-    private int posOfEditedImage;
+    private Uri editedImage;
+    private ImageView ivForEdit;
 
-    public PostsListAdapter(Context context) {
+    public PostsListAdapter(Context context, PostsViewModel postsViewModel) {
+
         this.mInfalter = LayoutInflater.from(context);
+        this.postsViewModel = postsViewModel;
     }
 
     @Override
@@ -124,25 +133,34 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 holder.ivPic.setImageDrawable(null);
             }
             // Handle editing post functionality
-            /*holder.makePostChangeBT.setOnClickListener(v -> {
+            holder.makePostChangeBT.setOnClickListener(v -> {
                 holder.tvContent.setHeight(holder.etContent.getHeight());
                 holder.tvContent.setText(holder.etContent.getText());
                 holder.etContent.setVisibility(View.GONE);
                 holder.makePostChangeBT.setVisibility(View.GONE);
                 holder.editImage.setVisibility(View.GONE);
                 holder.deleteImage.setVisibility(View.GONE);
+                if(this.editedImage != null) {
+                    try {
+                        current.setImage(Base64Utils.uriToBase64(editedImage));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 current.setContent(holder.etContent.getText().toString());
-            });*/
+                postsViewModel.updatePost(current.get_id(), current);
+            });
             // Handle editing post image functionality
-            /*holder.editImage.setOnClickListener(v -> {
-                posOfEditedImage = revposition;
+            holder.editImage.setOnClickListener(v -> {
+                ivForEdit = holder.ivPic;
                 selectPhoto(holder.editImage.getContext());
-            });*/
+            });
             // Handle deleting post image functionality
-            /*holder.deleteImage.setOnClickListener(v -> {
+            holder.deleteImage.setOnClickListener(v -> {
                 holder.ivPic.setImageResource(0);
-                current.setIntPic(0);
-            });*/
+                editedImage = null;
+                current.setImage("");
+            });
             // Handle opening comments page
             holder.commentBT.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.commentBT.getContext(), CommentsPageActivity.class);
@@ -154,7 +172,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             String currentUser = MyJWTtoken.getInstance().getUserDetails().getValue().get_id();
             if (postUser.equals(currentUser)) {
                 holder.menuBT.setOnClickListener(v -> {
-                    showPostMenu(v, holder);
+                    showPostMenu(v, position, holder);
                 });
                 holder.menuBT.setVisibility(View.VISIBLE);
             } else {
@@ -164,14 +182,24 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             holder.shareBT.setOnClickListener(v -> {
                 showShareMenu(v);
             });
-            if (current.getLikes().contains(MyJWTtoken.getInstance().getUserDetails().getValue().get_id())) {
+            boolean isUserLiked = current.getLikes().contains(MyJWTtoken.getInstance().getUserDetails().getValue().get_id());
+            if (isUserLiked) {
                 holder.likeBT.setBackgroundColor(Color.rgb(220, 220, 220));
             } else {
                 holder.likeBT.setBackgroundColor(Color.TRANSPARENT);
             }
             // Handle like functionality
             holder.likeBT.setOnClickListener(v -> {
-                // like operation ! missing
+                if (isUserLiked) {
+                    postsViewModel.unlikePost(current.get_id());
+                    current.getLikes().remove(currentUser);
+                }
+                else {
+                    postsViewModel.likePost(current.get_id());
+                    current.getLikes().add(currentUser);
+                }
+                notifyDataSetChanged();
+                postsViewModel.reload();
             });
             // Display like counter
             String likes = "";
@@ -186,17 +214,24 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
     }
 
     // Show post menu for edit/delete options
-    private void showPostMenu(View v, PostViewHolder holder) {
+    private void showPostMenu(View v, int position, PostViewHolder holder) {
         PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
         popupMenu.getMenuInflater().inflate(R.menu.edit_delete_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.deleteItem) {
-                    // Delete the post
+                    postsViewModel.deletePost(posts.remove(position).get_id());
+                    postsViewModel.reload();
                     return true;
                 } else if (item.getItemId() == R.id.editItem) {
                     // Edit the post
+                    holder.tvContent.setHeight(0);
+                    holder.etContent.setText(holder.tvContent.getText());
+                    holder.etContent.setVisibility(View.VISIBLE);
+                    holder.editImage.setVisibility(View.VISIBLE);
+                    holder.deleteImage.setVisibility(View.VISIBLE);
+                    holder.makePostChangeBT.setVisibility(View.VISIBLE);
                     return true;
                 }
                 return false;

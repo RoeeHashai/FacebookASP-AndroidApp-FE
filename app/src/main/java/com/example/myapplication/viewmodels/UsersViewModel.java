@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.LoginRequest;
+import com.example.myapplication.UserDetails;
 import com.example.myapplication.entities.User;
 import com.example.myapplication.repositories.UsersRepository;
 
@@ -24,5 +25,8 @@ public class UsersViewModel extends ViewModel {
     }
     public void login(LoginRequest loginRequest) {
         usersRepository.login(loginRequest);
+    }
+    public void editUser(UserDetails userDetails) {
+        usersRepository.editUser(userDetails);
     }
 }

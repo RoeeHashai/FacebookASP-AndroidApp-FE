@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -66,7 +67,7 @@ public class FeedPageActivity extends AppCompatActivity {
         });
         // Initialize RecyclerView for displaying posts
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
-        adapter = new PostsListAdapter(this);
+        adapter = new PostsListAdapter(this, postsViewModel);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
@@ -95,7 +96,7 @@ public class FeedPageActivity extends AppCompatActivity {
             Intent i = new Intent(this, AddPostActivity.class);
             startActivity(i);
         });
-
+        postsViewModel.reload();
     }
 
     /**
@@ -134,6 +135,11 @@ public class FeedPageActivity extends AppCompatActivity {
                     startActivity(i);
                     return true;
                 }
+                if (item.getItemId() == R.id.editUserItem) {
+                    Intent i = new Intent(v.getContext(), EditUserActivity.class);
+                    startActivity(i);
+                    return true;
+                }
                 if (item.getItemId() == R.id.homeItem) {
                     Intent i = new Intent(v.getContext(), FeedPageActivity.class);
                     startActivity(i);
@@ -160,8 +166,7 @@ public class FeedPageActivity extends AppCompatActivity {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 selectedImageUri = BitmapUtils.bitmapToUri(this, photo);
             }
-            //PostListSrc.getInstance(this).getPosts().get(adapter.getPosOfEditedImage()).setUriPic(selectedImageUri);
-            adapter.notifyDataSetChanged();
+            adapter.setEditedImage(selectedImageUri);
         }
     }
 
@@ -174,5 +179,11 @@ public class FeedPageActivity extends AppCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        postsViewModel.reload();
     }
 }

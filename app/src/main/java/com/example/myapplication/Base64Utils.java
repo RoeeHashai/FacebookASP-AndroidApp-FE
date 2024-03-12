@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Base64Utils {
+    private static final String preBase64 = "data:image/jpeg;base64,";
     public static String uriToBase64(Uri uri) throws IOException {
         InputStream inputStream = MyApplication.context.getContentResolver().openInputStream(uri);
         byte[] bytes = getBytes(inputStream);
-        return "data:image/jpeg;base64," + Base64.encodeToString(bytes, Base64.DEFAULT);
+        return (preBase64 + Base64.encodeToString(bytes, Base64.DEFAULT)).replace("\n","");
     }
 
     private static byte[] getBytes(InputStream inputStream) throws IOException {
@@ -29,7 +30,7 @@ public class Base64Utils {
     }
 
     public static Uri base64ToUri(String base64String) throws IOException {
-        String base64s = base64String.split(",", 2)[1];
+        String base64s = base64String.substring(preBase64.length());
         byte[] decodedBytes;
         decodedBytes = Base64.decode(base64s, Base64.DEFAULT);
         File file = File.createTempFile("temp_image", null, MyApplication.context.getCacheDir());

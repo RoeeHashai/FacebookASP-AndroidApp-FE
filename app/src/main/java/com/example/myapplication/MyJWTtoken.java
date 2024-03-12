@@ -52,4 +52,11 @@ public class MyJWTtoken {
         }
         this.userDetails.setValue(userDetails);
     }
+
+    public void postUserDetails(UserDetails userDetails) {
+        if (this.userDetails == null) {
+            this.userDetails = new MutableLiveData<>();
+        }
+        this.userDetails.postValue(userDetails);
+    }
 }

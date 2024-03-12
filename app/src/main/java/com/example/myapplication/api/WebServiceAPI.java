@@ -80,4 +80,10 @@ public interface WebServiceAPI {
     // Delete friend or friend request
     @DELETE("users/{id}/friends/{fid}")
     Call<Void> deleteFriend(@Header("Authorization") String authToken, @Path("id") String userId, @Path("fid") String friendId);
+
+    @POST("users/{id}/posts/{pid}/likes")
+    Call<Void> likePost(@Header("Authorization") String authToken, @Path("id") String userId, @Path("pid") String PostId);
+
+    @DELETE("users/{id}/posts/{pid}/likes")
+    Call<Void> unlikePost(@Header("Authorization") String authToken, @Path("id") String userId, @Path("pid") String PostId);
 }

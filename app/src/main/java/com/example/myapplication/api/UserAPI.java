@@ -11,6 +11,7 @@ import com.example.myapplication.LoginRequest;
 import com.example.myapplication.MyApplication;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
+import com.example.myapplication.UserDetails;
 import com.example.myapplication.entities.User;
 
 import java.util.concurrent.CountDownLatch;
@@ -71,6 +72,33 @@ public class UserAPI {
             @Override
             public void onFailure(Call<JWT> call, Throwable t) {
                 Toast.makeText(MyApplication.context, "Unable to connect to server", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void editUser(UserDetails user) {
+        String jwt = MyJWTtoken.getInstance().getToken().getValue();
+        UserDetails current = MyJWTtoken.getInstance().getUserDetails().getValue();
+        String id = current.get_id();
+        user.set_id(id);
+        Call<Void> call = webServiceAPI.updateUserDetails(jwt, id, user);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    user.setEmail(MyJWTtoken.getInstance().getUserDetails().getValue().getEmail());
+                    MyJWTtoken.getInstance().setUserDetails(user);
+                    Toast.makeText(MyApplication.context, "edit successfully!", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    ErrorResponse errorResponse = ErrorUtils.parseError(response);
+                    String errorMessage = errorResponse.getMessage();
+                    Toast.makeText(MyApplication.context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
             }
         });
     }

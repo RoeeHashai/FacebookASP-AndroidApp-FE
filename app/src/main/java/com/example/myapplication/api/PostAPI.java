@@ -13,6 +13,7 @@ import com.example.myapplication.UserDetails;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.PostDao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -44,11 +45,11 @@ public class PostAPI {
         call.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-
                 new Thread(() -> {
-                    dao.clear();
-                    dao.insertList(response.body());
-                    postListData.postValue(dao.index());
+                    //dao.clear();
+                    //dao.insertList(response.body());
+                    //postListData.postValue(dao.index());
+                    postListData.postValue(response.body());
                 }).start();
             }
 
@@ -65,10 +66,11 @@ public class PostAPI {
         call.enqueue(new Callback<UserDetails>() {
             @Override
             public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
-                UserDetails userDetails = response.body();
-                MyJWTtoken.getInstance().setUserDetails(userDetails);
+                new Thread(() -> {
+                    UserDetails userDetails = response.body();
+                    MyJWTtoken.getInstance().postUserDetails(userDetails);
+                }).start();
             }
-
             @Override
             public void onFailure(Call<UserDetails> call, Throwable t) {
             }
@@ -89,6 +91,60 @@ public class PostAPI {
                     String errorMessage = errorResponse.getMessage();
                     Toast.makeText(MyApplication.context, errorMessage, Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+    public void likePost(String pid) {
+        Call<Void> call = webServiceAPI.likePost(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), pid);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+    public void unlikePost(String pid) {
+        Call<Void> call = webServiceAPI.unlikePost(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), pid);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+
+    public void deletePost(String pid) {
+        Call<Void> call = webServiceAPI.deletePost(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), pid);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
+
+    public void updatePost(String pid, Post post) {
+        Call<Void> call = webServiceAPI.updatePost(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), pid, post);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
             }
 
             @Override
