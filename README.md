@@ -18,7 +18,7 @@ To run this project on your local machine, follow these steps:
 **Clone the Repository**: Clone this repository to your local machine using Git.
 
    ```bash
-   git clone https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/tree/main
+   git clone -b main-BE-Stage3 https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/tree/main
   ```
 Open in Android Studio: Open the project in Android Studio.  
 Run the Application: Build and run the application on an Android emulator or a physical device.
