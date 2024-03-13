@@ -1,47 +1,44 @@
 # Facebook Android Application
 
-This Android Studio project implements a Facebook-like application where users can create profiles, post updates, comment on posts, like posts, and connect with friends.
+## Description
+This Android application serves as a client for a social media platform. It allows users to register, log in, view their feed, create and delete posts, manage friends, and more.
 
 ## Features
+1. **User authentication**: Registering new users and logging into existing accounts.
+2. **Feed display**: Showing posts from friends and new posts.
+3. **Post management**: Creating, editing, and deleting posts.
+4. **Friends management**: Viewing friends list, sending friend requests, accepting friend requests, and removing friends.
+5. **Profile management**: Viewing and updating user profile.
+6. **Account deletion**: Deleting user accounts.
+7. **Like/Dislike posts**: Interact with posts by liking or disliking them.
+8. **Dark/Light mode**: Toggle between dark and light themes for better user experience.
 
-- User Authentication: Users can sign up, log in, and log out securely.
-- Profile Creation: Users can create and customize their profiles with personal information, profile pictures, etc.
-- Post Updates: Users can create posts and share updates with their friends.
-- Commenting: Users can comment on posts.
-- Liking: Users can like posts.
-- Friend Connections: Users can connect with other users and view their profiles.
+## Setup Instructions
+1. Clone the repository to your local machine.
+2. Open the project in Android Studio.
+3. Ensure that the necessary dependencies are installed.
+4. Run the application on an Android emulator.
 
-## Setup
+## How to Run
+1. In Android Studio, select your device from the list of available devices.
+2. Click on the "Run" button to build and install the app on the device.
+3. Once installed, open the app on the device and follow the on-screen instructions to register or log in.
 
-To run this project on your local machine, follow these steps:
+## Screenshots
+<!-- Add screenshots of your app to illustrate its functionality -->
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/afd61af6-af3c-4221-b05d-0142c8327502" alt="Screenshot 1" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/4e53f6b7-fefe-4f43-a800-33d879bef428" alt="Screenshot 2" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/2086aadb-d286-4ef2-8fe1-98fb6457cd85" alt="Screenshot 3" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/c94b130f-9da1-4c07-b0d4-0d07202818cc" alt="Screenshot 4" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/b895f974-98d9-4cd3-ab2c-e712449d0208" alt="Screenshot 5" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/47ae69dc-853e-42bb-825d-ada098d46691" alt="Screenshot 6" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/2a542d5b-505d-414a-b5a9-a115f1fe7a7d" alt="Screenshot 7" width="300">
 
-**Clone the Repository**: Clone this repository to your local machine using Git.
 
-   ```bash
-   git clone https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/tree/main
-  ```
-Open in Android Studio: Open the project in Android Studio.  
-Run the Application: Build and run the application on an Android emulator or a physical device.
+## Limitations
+1. This app requires an active server connection.
+2. It supports only the features provided by the API.
+3. No sensitive data should be stored on the device or sent to the server.
 
-## Usage
-
-User Authentication: Sign up for a new account or log in with an existing account.  
-Post Updates: Create new posts and share updates with your friends.  
-Interact with Posts: Like posts by clicking the like button and comment on posts by adding comments.  
-Connect with Friends: Search for other users and send friend requests to connect with them.  
-
-## Our team Work
-Together, we successfully designed and implemented various features and functionalities to create a comprehensive user experience. Here's a summary of our collaborative efforts:
-
-### 1. Design Collaboration:
-
-We worked hand-in-hand to design intuitive and visually appealing user interfaces for the application's pages and activities.
-### 2. Feature Implementation:
-
-First, we focus with implementing the user authentication system, navigation between screens, and input validation, ensuring a seamless user experience, and then, implementing the feed display, post creation and management functionalities, along with the commenting system and like operation.
-### 3. Iterative Development:
-
-Throughout the development process, we iteratively improved and refined the application's features based on continuous feedback and testing.
-### 4. User Testing and Feedback:
-
-We actively engaged in user testing sessions, gathering valuable feedback to further enhance the application's usability and functionality.
+## Conclusion
+Please ensure to follow the setup instructions carefully and use the application responsibly. For any issues or feedback, please contact the project team.
