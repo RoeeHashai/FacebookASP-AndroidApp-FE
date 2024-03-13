@@ -1,5 +1,6 @@
 package com.example.myapplication.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.myapplication.Base64Utils;
+import com.example.myapplication.DialogUtils;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.FriendsListAdapter;
@@ -107,21 +109,29 @@ public class FriendsActivity extends AppCompatActivity {
                     String id = MyJWTtoken.getInstance().getUserDetails().getValue().get_id();
                     i.putExtra("ID", id);
                     startActivity(i);
+                    finish();
                     return true;
                 }
                 if (item.getItemId() == R.id.editUserItem) {
                     Intent i = new Intent(v.getContext(), EditUserActivity.class);
                     startActivity(i);
+                    finish();
                     return true;
                 }
                 if (item.getItemId() == R.id.deleteUserItem) {
-                    usersViewModel.deleteUser();
-                    logOut();
+                    DialogUtils.showAreYouSureDialog(v.getContext(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            usersViewModel.deleteUser();
+                            logOut();
+                        }
+                    });
                     return true;
                 }
                 if (item.getItemId() == R.id.homeItem) {
                     Intent i = new Intent(v.getContext(), FeedPageActivity.class);
                     startActivity(i);
+                    finish();
                     return true;
                 }
                 return false;

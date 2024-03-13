@@ -1,5 +1,6 @@
 package com.example.myapplication.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -68,6 +69,8 @@ public class EditUserActivity extends AppCompatActivity {
             usersViewModel.editUser(userDetails);
         });
         backToFeedBT.setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), FriendsActivity.class);
+            startActivity(i);
             finish();
         });
     }

@@ -13,10 +13,12 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Base64Utils;
 import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
 import com.example.myapplication.entities.Comment;
 
+import java.io.IOException;
 import java.util.List;
 /**
  * Adapter for displaying a list of comments in a RecyclerView.
@@ -60,7 +62,14 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
         if (comments != null) {
-
+            Comment current = comments.get(position);
+            holder.tvContent.setText(current.getContent());
+            holder.tvAuthor.setText(current.getAuthor().getName());
+            try {
+                holder.ivProfile.setImageURI(Base64Utils.base64ToUri(current.getAuthor().getImage()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

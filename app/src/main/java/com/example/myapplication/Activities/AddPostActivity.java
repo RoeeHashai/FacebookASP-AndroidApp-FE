@@ -53,6 +53,8 @@ public class AddPostActivity extends AppCompatActivity {
         publishBT.setOnClickListener(v -> {
             if (validPost()) {
                 publishPost();
+                Intent i = new Intent(this, FeedPageActivity.class);
+                startActivity(i);
                 finish();
             }
         });

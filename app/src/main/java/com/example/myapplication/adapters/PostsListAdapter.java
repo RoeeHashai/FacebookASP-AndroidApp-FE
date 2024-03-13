@@ -219,8 +219,12 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 likes += current.getLikes().size();
             }
             holder.likeCounter.setText(likes);
+            holder.commentBT.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), CommentsPageActivity.class);
+                intent.putExtra("POST", current.get_id());
+                v.getContext().startActivity(intent);
+            });
         }
-
     }
 
     // Show post menu for edit/delete options
@@ -231,8 +235,9 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.deleteItem) {
-                    postsViewModel.deletePost(posts.remove(position).get_id());
-                    postsViewModel.reload();
+                    postsViewModel.deletePost(posts.get(position).get_id());
+                    posts.remove(position);
+                    notifyDataSetChanged();
                     return true;
                 } else if (item.getItemId() == R.id.editItem) {
                     // Edit the post
@@ -301,5 +306,6 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         Intent intent = new Intent(context, ProfileActivity.class);
         intent.putExtra("ID", id);
         context.startActivity(intent);
+        ((Activity) context).finish();
     }
 }

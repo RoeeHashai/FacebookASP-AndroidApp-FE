@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 
 import com.example.myapplication.Base64Utils;
 import com.example.myapplication.BitmapUtils;
+import com.example.myapplication.DialogUtils;
+import com.example.myapplication.MyApplication;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
 import com.example.myapplication.entities.UserDetails;
@@ -51,11 +54,10 @@ public class FeedPageActivity extends AppCompatActivity {
         setContentView(R.layout.feed_page);
         postsViewModel = new ViewModelProvider(this).get(PostsViewModel.class);
         usersViewModel = new ViewModelProvider(this).get(UsersViewModel.class);
-        if(MyJWTtoken.getInstance().isExist()) {
+        if (MyJWTtoken.getInstance().isExist()) {
             setHeaderDetails(MyJWTtoken.getInstance().getUserDetails().getValue());
             postsViewModel.reload();
-        }
-        else {
+        } else {
             UserDetails userDetails = new UserDetails();
             userDetails.setEmail(getIntent().getStringExtra("EMAIL"));
             MyJWTtoken.getInstance().setUserDetails(userDetails);
@@ -66,7 +68,6 @@ public class FeedPageActivity extends AppCompatActivity {
                 public void onChanged(UserDetails userDetails) {
                     if (userDetails.get_id() != null) {
                         setHeaderDetails(userDetails);
-                        postsViewModel.reload();
                     }
                 }
             });
@@ -143,11 +144,13 @@ public class FeedPageActivity extends AppCompatActivity {
                     String id = MyJWTtoken.getInstance().getUserDetails().getValue().get_id();
                     i.putExtra("ID", id);
                     startActivity(i);
+                    finish();
                     return true;
                 }
                 if (item.getItemId() == R.id.myFriendsItem) {
                     Intent i = new Intent(v.getContext(), FriendsActivity.class);
                     startActivity(i);
+                    finish();
                     return true;
                 }
                 if (item.getItemId() == R.id.editUserItem) {
@@ -156,13 +159,20 @@ public class FeedPageActivity extends AppCompatActivity {
                     return true;
                 }
                 if (item.getItemId() == R.id.deleteUserItem) {
-                    usersViewModel.deleteUser();
-                    logOut();
+                    DialogUtils.showAreYouSureDialog(v.getContext(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            usersViewModel.deleteUser();
+                            logOut();
+                        }
+                    });
+
                     return true;
                 }
                 if (item.getItemId() == R.id.homeItem) {
                     Intent i = new Intent(v.getContext(), FeedPageActivity.class);
                     startActivity(i);
+                    finish();
                     return true;
                 }
                 return false;

@@ -13,16 +13,21 @@ public class PostsViewModel extends ViewModel {
 
     private PostsRepository repository;
     private LiveData<List<Post>> posts;
+    private LiveData<List<Post>> profile;
     private LiveData<List<Comment>> comments;
 
     public PostsViewModel() {
         repository = new PostsRepository();
         posts = repository.getAll();
         comments = repository.getAllComments();
+        profile = repository.getProfile();
     }
 
     public LiveData<List<Post>> get() {
         return posts;
+    }
+    public LiveData<List<Post>> getProfile() {
+        return profile;
     }
     public LiveData<List<Comment>> getComments() {
         return comments;

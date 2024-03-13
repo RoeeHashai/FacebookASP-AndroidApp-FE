@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.PostListSrc;
 import com.example.myapplication.R;
 import com.example.myapplication.UserListSrc;
@@ -19,6 +21,7 @@ import com.example.myapplication.entities.Comment;
 import com.example.myapplication.entities.Post;
 import com.example.myapplication.entities.User;
 import com.example.myapplication.viewmodels.PostsViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,19 +55,23 @@ public class CommentsPageActivity extends AppCompatActivity {
             adapter.setComment(comments);
             refreshLayout.setRefreshing(false);
         });
-
         ImageButton addCommentBT = findViewById(R.id.addCommentBT);
         addCommentBT.setOnClickListener(v -> {
             EditText contentView = findViewById(R.id.commentContentBox);
             String content = contentView.getText().toString();
             Comment comment = new Comment();
             comment.setContent(content);
-            comment.setId(currentPost);
-            if (content.length() != 0) {
+            comment.setAuthor(MyJWTtoken.getInstance().getUserDetails().getValue());
+            if (!content.isEmpty()) {
                 postsViewModel.createComment(currentPost, comment);
             }
             // Clear the content of the comment box after adding the comment
             contentView.setText("");
+        });
+        postsViewModel.reloadComments(currentPost);
+        FloatingActionButton backBT = findViewById(R.id.backToFeedBT);
+        backBT.setOnClickListener(v -> {
+            finish();
         });
     }
 }

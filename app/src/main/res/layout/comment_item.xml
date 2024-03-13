@@ -17,11 +17,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="1dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivComProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:cropToPadding="false"
+            android:scaleType="centerCrop"
             android:src="@drawable/account_circle_24px" />
 
         <LinearLayout
