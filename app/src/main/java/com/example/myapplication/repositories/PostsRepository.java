@@ -18,16 +18,18 @@ import java.util.List;
 public class PostsRepository {
     private PostDao dao;
     private PostListData postListData;
+    private ProfileListData profileListData;
     private CommentListData commentListData;
     private PostAPI api;
 
     public PostsRepository() {
         AppDB db = Room.databaseBuilder(MyApplication.context, AppDB.class, "PostsDB")
-                .allowMainThreadQueries().build();
+                .fallbackToDestructiveMigration().build();
         dao = db.postDao();
         postListData = new PostListData();
+        profileListData = new ProfileListData();
         commentListData = new CommentListData();
-        api = new PostAPI(postListData, commentListData, dao);
+        api = new PostAPI(postListData, profileListData, commentListData, dao);
     }
 
     class PostListData extends MutableLiveData<List<Post>> {
@@ -40,8 +42,23 @@ public class PostsRepository {
         protected void onActive() {
             super.onActive();
             new Thread(() -> {
-                //postListData.postValue(dao.index());
-                postListData.postValue(postListData.getValue());
+                postListData.postValue(dao.index());
+                //postListData.postValue(postListData.getValue());
+            }).start();
+        }
+    }
+
+    class ProfileListData extends MutableLiveData<List<Post>> {
+        public ProfileListData() {
+            super();
+            setValue(new ArrayList<>());
+        }
+
+        @Override
+        protected void onActive() {
+            super.onActive();
+            new Thread(() -> {
+                profileListData.postValue(postListData.getValue());
             }).start();
         }
     }
@@ -68,6 +85,10 @@ public class PostsRepository {
     public LiveData<List<Post>> getAll() {
         return postListData;
     }
+    public LiveData<List<Post>> getProfile() {
+        return profileListData;
+    }
+
     public LiveData<List<Comment>> getAllComments() {
         return commentListData;
     }

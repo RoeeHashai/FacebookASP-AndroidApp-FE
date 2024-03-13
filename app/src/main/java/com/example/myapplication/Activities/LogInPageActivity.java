@@ -30,6 +30,7 @@ public class LogInPageActivity extends AppCompatActivity {
         SignInBT.setOnClickListener(v -> {
             Intent i = new Intent(this, SignInPageActivity.class);
             startActivity(i);
+            finish();
         });
         // Log in button click listener
         Button LogInBT = findViewById(R.id.LogInBT);
@@ -45,6 +46,7 @@ public class LogInPageActivity extends AppCompatActivity {
                 i.putExtra("EMAIL", usernameBox.getText().toString());
                 startActivity(i);
                 passwordBox.setText("");
+                finish();
             });
         });
     }

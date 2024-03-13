@@ -52,6 +52,7 @@ public class SignInPageActivity extends AppCompatActivity {
         goToLogInBT.setOnClickListener(v -> {
             Intent i = new Intent(this, LogInPageActivity.class);
             startActivity(i);
+            finish();
         });
     }
 

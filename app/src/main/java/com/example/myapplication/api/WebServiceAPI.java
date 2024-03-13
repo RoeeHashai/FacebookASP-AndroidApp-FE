@@ -1,5 +1,6 @@
 package com.example.myapplication.api;
 
+import com.example.myapplication.Comments;
 import com.example.myapplication.Friends;
 import com.example.myapplication.entities.Comment;
 import com.example.myapplication.entities.Friend;
@@ -90,7 +91,7 @@ public interface WebServiceAPI {
     Call<Void> unlikePost(@Header("Authorization") String authToken, @Path("id") String userId, @Path("pid") String PostId);
 
     @GET("users/{id}/posts/{pid}/comments")
-    Call<List<Comment>> getPostComments(@Header("Authorization") String authToken, @Path("id") String userId, @Path("pid") String PostId);
+    Call<Comments> getPostComments(@Header("Authorization") String authToken, @Path("id") String userId, @Path("pid") String PostId);
 
     @POST("users/{id}/posts/{pid}/comments")
     Call<Void> createComment(@Header("Authorization") String authToken, @Path("id") String userId, @Path("pid") String PostId, @Body Comment comment);
