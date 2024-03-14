@@ -39,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
     private UsersViewModel usersViewModel;
     private PostsViewModel postsViewModel;
     protected PostsListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         user.observe(this, userDetails -> {
             if (userDetails != null) {
                 setHeaderDetails(userDetails);
-                postsViewModel.reloadProfile(userId);
-                usersViewModel.getFriends().observe(this, friendList -> {
-                    setPage(friendList);
-                });
+                uploadHisProfil(userDetails);
             }
         });
         usersViewModel.reloadFriends();
@@ -71,6 +69,11 @@ public class ProfileActivity extends AppCompatActivity {
             MyJWTtoken.getInstance().forget();
             logOut();
         });
+    }
+
+    private void uploadHisProfil(UserDetails userDetails) {
+        postsViewModel.reloadProfile(userDetails.get_id());
+        usersViewModel.getFriends().observe(this, this::setPage);
     }
 
     private void setPage(List<Friend> friendList) {
@@ -92,7 +95,8 @@ public class ProfileActivity extends AppCompatActivity {
             case "pending":
                 pend();
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -102,6 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
         sendReqBT.setVisibility(View.GONE);
         tvReqSent.setVisibility(View.VISIBLE);
         tvReqSent.setText("This user is waiting your approval!");
+        setRefreshUpd();
     }
 
     private void notFriend() {
@@ -113,15 +118,23 @@ public class ProfileActivity extends AppCompatActivity {
             usersViewModel.sendRequest(user.getValue().get_id());
             sPend();
         });
+        setRefreshUpd();
     }
+
     private void sPend() {
         Button sendReqBT = findViewById(R.id.sendFriendReqBT);
         TextView tvReqSent = findViewById(R.id.tvReqSent);
         sendReqBT.setVisibility(View.GONE);
         tvReqSent.setVisibility(View.VISIBLE);
         tvReqSent.setText("Request sent! waiting for an answer");
+        setRefreshUpd();
     }
+
     private void initAdapter() {
+        Button sendReqBT = findViewById(R.id.sendFriendReqBT);
+        TextView tvReqSent = findViewById(R.id.tvReqSent);
+        sendReqBT.setVisibility(View.GONE);
+        tvReqSent.setVisibility(View.GONE);
         // Initialize RecyclerView for displaying posts
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
         adapter = new PostsListAdapter(this, postsViewModel, this);
@@ -140,13 +153,14 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String isHeIsMyFriend(List<Friend> friendList) {
         String userId = user.getValue().get_id();
-        for (int i = 0 ; i < friendList.size() ; i++) {
+        for (int i = 0; i < friendList.size(); i++) {
             if (Objects.equals(userId, friendList.get(i).get_id())) {
                 return friendList.get(i).getStatus();
             }
         }
         return getString(R.string.no);
     }
+
     private void logOut() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         Intent i = new Intent(this, LogInPageActivity.class);
@@ -216,6 +230,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
+
     private void changeNightMood() {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -228,5 +243,13 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         postsViewModel.reloadProfile(user.getValue().get_id());
+    }
+
+    private void setRefreshUpd() {
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(() -> {
+            usersViewModel.reloadFriends();
+            refreshLayout.setRefreshing(false);
+        });
     }
 }
