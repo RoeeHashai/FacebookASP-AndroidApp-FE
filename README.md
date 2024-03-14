@@ -25,6 +25,21 @@ This Android application serves as a client for a social media platform. It allo
 2. Click on the "Run" button to build and install the app on the device.
 3. Once installed, open the app on the device and follow the on-screen instructions to register or log in.
 
+
+
+## Instructions for Changing Server URL if needed
+**Note:** By default, the server URL is set to `http://10.0.2.2:8080/api/` and may not require modification unless you are connecting to a different server.
+
+   - Navigate and open `res` > `values` > `strings.xml` file in a text editor or within Android Studio.
+   - Find the line `<string name="BaseUrl">http://10.0.2.2:8080/api/</string>`.
+   - Change the URL within the `<string>` tags to the desired server URL. For example:
+     ```xml
+     <string name="BaseUrl">http://your-new-server-url.com/api/</string>
+     ```
+   - Save the `strings.xml` file after making the modifications.
+   - rebuild the App to ensure that the changes are applied.
+
+
 ## Screenshots
 <!-- Add screenshots of your app to illustrate its functionality -->
 <img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/afd61af6-af3c-4221-b05d-0142c8327502" alt="Screenshot 1" width="300">
