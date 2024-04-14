@@ -2,6 +2,8 @@ package com.example.myapplication.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.myapplication.Base64Utils;
+import com.example.myapplication.BitmapUtils;
 import com.example.myapplication.DialogUtils;
 import com.example.myapplication.MyJWTtoken;
 import com.example.myapplication.R;
@@ -35,6 +38,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity {
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private MutableLiveData<UserDetails> user;
     private UsersViewModel usersViewModel;
     private PostsViewModel postsViewModel;
@@ -239,17 +243,31 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        postsViewModel.reloadProfile(user.getValue().get_id());
-    }
-
     private void setRefreshUpd() {
         SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(() -> {
             usersViewModel.reloadFriends();
             refreshLayout.setRefreshing(false);
         });
+    }
+
+    /**
+     * Handles the result of selecting an image to attach to a post.
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        postsViewModel.reloadProfile(user.getValue().get_id());
+        Uri selectedImageUri;
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                selectedImageUri = data.getData();
+            } else {
+                // Handle camera photo capture
+                // The photo is available in the intent's extras as a bitmap
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                selectedImageUri = BitmapUtils.bitmapToUri(this, photo);
+            }
+            adapter.setEditedImage(selectedImageUri);
+        }
     }
 }

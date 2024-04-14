@@ -1,6 +1,7 @@
 package com.example.myapplication.viewmodels;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.entities.Comment;
@@ -64,6 +65,9 @@ public class PostsViewModel extends ViewModel {
     }
     public void deletePost(String pid){
         repository.deletePost(pid);
+    }
+    public void updatePost(String pid, Post post, MutableLiveData<Boolean> editOK){
+        repository.updatePost(pid, post, editOK);
     }
     public void updatePost(String pid, Post post){
         repository.updatePost(pid, post);

@@ -119,6 +119,9 @@ public class PostsRepository {
     public void deletePost(String pid) {
         api.deletePost(pid);
     }
+    public void updatePost(String pid, Post post, MutableLiveData<Boolean> editOK) {
+        api.updatePost(pid, post, editOK);
+    }
     public void updatePost(String pid, Post post) {
         api.updatePost(pid, post);
     }

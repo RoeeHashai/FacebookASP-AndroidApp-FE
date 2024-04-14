@@ -85,7 +85,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
                     comments.remove(position);
                     notifyDataSetChanged();
                     return true;
-                } else if (item.getItemId() == R.id.editItem) {
+                } else if (item.getItemId() == R.id.editTextItem) {
                     // Edit the comment
                     holder.tvContent.setVisibility(View.GONE);
                     holder.etContent.setText(holder.tvContent.getText());

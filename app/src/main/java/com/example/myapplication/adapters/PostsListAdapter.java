@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -143,40 +144,27 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             }
             // Handle editing post functionality
             holder.makePostChangeBT.setOnClickListener(v -> {
-                holder.tvContent.setHeight(holder.etContent.getHeight());
-                holder.tvContent.setText(holder.etContent.getText());
-                holder.etContent.setVisibility(View.GONE);
-                holder.makePostChangeBT.setVisibility(View.GONE);
-                holder.editImage.setVisibility(View.GONE);
-                holder.deleteImage.setVisibility(View.GONE);
-                if(this.editedImage != null && this.editedImage.getValue() != null) {
-                    try {
-                        current.setImage(Base64Utils.uriToBase64(editedImage.getValue()));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                current.setContent(holder.etContent.getText().toString());
-                postsViewModel.updatePost(current.get_id(), current);
-            });
-            // Handle editing post image functionality
-            holder.editImage.setOnClickListener(v -> {
-                editedImage = new MutableLiveData<>();
-                selectPhoto(holder.editImage.getContext());
-                editedImage.observe(owner, uri -> {
-                    holder.ivPic.setImageURI(uri);
-                    try {
-                        current.setImage(Base64Utils.uriToBase64(uri));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                Post editedPost = new Post();
+                editedPost.set_id(current.get_id());
+                editedPost.setContent(holder.etContent.getText().toString());
+                editedPost.setImage(current.getImage());
+                editedPost.setDate(current.getDate());
+                editedPost.setLikes(current.getLikes());
+                editedPost.setAuthor(current.getAuthor());
+                editedPost.setCommentsLength(current.getCommentsLength());
+                MutableLiveData<Boolean> editOK = new MutableLiveData<>();
+                postsViewModel.updatePost(editedPost.get_id(), editedPost, editOK);
+                editOK.observe(owner, isOK -> {
+                    if(isOK) {
+                        holder.tvContent.setHeight(holder.etContent.getHeight());
+                        holder.tvContent.setText(holder.etContent.getText());
+                        holder.etContent.setVisibility(View.GONE);
+                        holder.makePostChangeBT.setVisibility(View.GONE);
+                        current.setContent(holder.etContent.getText().toString());
+                        postsViewModel.reload();
                     }
                 });
-            });
-            // Handle deleting post image functionality
-            holder.deleteImage.setOnClickListener(v -> {
-                holder.ivPic.setImageResource(0);
-                editedImage = null;
-                current.setImage("");
+
             });
             // Show post menu for the author of the post
             String postUser = current.getAuthor().get_id();
@@ -239,14 +227,42 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                     posts.remove(position);
                     notifyDataSetChanged();
                     return true;
-                } else if (item.getItemId() == R.id.editItem) {
+                } else if (item.getItemId() == R.id.editTextItem) {
                     // Edit the post
                     holder.tvContent.setHeight(0);
                     holder.etContent.setText(holder.tvContent.getText());
                     holder.etContent.setVisibility(View.VISIBLE);
-                    holder.editImage.setVisibility(View.VISIBLE);
-                    holder.deleteImage.setVisibility(View.VISIBLE);
                     holder.makePostChangeBT.setVisibility(View.VISIBLE);
+                    return true;
+                } else if (item.getItemId() == R.id.editImageItem) {
+                    editedImage = new MutableLiveData<>();
+                    selectPhoto(holder.editImage.getContext());
+                    editedImage.observe(owner, uri -> {
+                        try {
+                            posts.get(position).setImage(Base64Utils.uriToBase64(uri));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        MutableLiveData<Boolean> editOK = new MutableLiveData<>();
+                        postsViewModel.updatePost(posts.get(position).get_id(), posts.get(position), editOK);
+                        editOK.observe(owner, isOK -> {
+                            if(isOK) {
+                                postsViewModel.reload();
+                                postsViewModel.reloadProfile(MyJWTtoken.getInstance().getUserDetails().getValue().get_id());
+                            }
+                        });
+                    });
+                    return true;
+                } else if (item.getItemId() == R.id.deleteImageItem) {
+                    if (holder.tvContent.getText().toString().isEmpty()) {
+                        Toast.makeText(holder.tvContent.getContext(), "You cannot leave a post completely blank", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        editedImage = null;
+                        posts.get(position).setImage("");
+                        holder.ivPic.setImageDrawable(null);
+                        postsViewModel.updatePost(posts.get(position).get_id(), posts.get(position));
+                    }
                     return true;
                 }
                 return false;
