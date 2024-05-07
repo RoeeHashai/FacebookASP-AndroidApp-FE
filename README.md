@@ -28,8 +28,7 @@ This Android application serves as a client for a social media platform. It allo
 
 
 ## Instructions for Changing Server URL if needed
-**Note:** By default, the server URL is set to `http://10.0.2.2:8080/api/` and may not require modification unless you are connecting to a different server.
-
+**Important Note**: The default server URL is set to `http://10.0.2.2:8080/api/`. You should only need to modify this if you are connecting to a server that is not hosted locally, or if there's a need to use a different port or domain. Follow the steps below to adjust the server settings appropriately:
    - Navigate and open `res` > `values` > `strings.xml` file in a text editor or within Android Studio.
    - Find the line `<string name="BaseUrl">http://10.0.2.2:8080/api/</string>`.
    - Change the URL within the `<string>` tags to the desired server URL. For example:
