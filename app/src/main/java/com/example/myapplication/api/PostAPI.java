@@ -215,5 +215,28 @@ public class PostAPI {
             }
         });
     }
+
+    public void updatePost(String pid, Post post, MutableLiveData<Boolean> editOK) {
+        Call<Void> call = webServiceAPI.updatePost(MyJWTtoken.getInstance().getToken().getValue(),
+                MyJWTtoken.getInstance().getUserDetails().getValue().get_id(), pid, post);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(MyApplication.context, "edited successfully!", Toast.LENGTH_SHORT).show();
+                    editOK.setValue(true);
+
+                } else {
+                    ErrorResponse errorResponse = ErrorUtils.parseError(response);
+                    String errorMessage = errorResponse.getMessage();
+                    Toast.makeText(MyApplication.context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+    }
 }
 
